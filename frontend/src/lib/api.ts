@@ -13,3 +13,13 @@ export async function runSimulation(
   if (!res.ok) throw new Error(`Server Error: ${res.status}`)
   return res.json() as Promise<SimulationResponse>
 }
+
+export async function exportPlot(req: SimulationRequest): Promise<Blob> {
+  const res = await fetch(`${BASE_URL}/export/plot`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  })
+  if (!res.ok) throw new Error(`Export failed: ${res.status}`)
+  return res.blob()
+}

@@ -1,14 +1,18 @@
-
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import { Badge } from "../components/ui/badge"
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "../components/ui/table";
-import { RISK_LABEL, RISK_STYLE } from "../data/risks";
-import type { PredictionRow } from "../types/simulation";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table"
+import { RISK_LABEL, RISK_STYLE } from "../data/risks"
+import type { PredictionRow } from "../types/simulation"
 
 interface Props {
-  rows: PredictionRow[];
+  rows: PredictionRow[]
 }
 
 export default function PredictionTable({ rows }: Props) {
@@ -34,7 +38,9 @@ export default function PredictionTable({ rows }: Props) {
                 <TableCell>{Math.round(r.recoveredPct)}%</TableCell>
                 <TableCell>{r.riskIndex.toFixed(1)}</TableCell>
                 <TableCell>
-                  <Badge className={RISK_STYLE[r.risk]}>{RISK_LABEL[r.risk]}</Badge>
+                  <Badge className={RISK_STYLE[r.risk]}>
+                    {RISK_LABEL[r.risk]}
+                  </Badge>
                 </TableCell>
               </TableRow>
             ))}
@@ -45,5 +51,5 @@ export default function PredictionTable({ rows }: Props) {
         </p>
       </CardContent>
     </Card>
-  );
+  )
 }
