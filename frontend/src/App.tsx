@@ -1,12 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppSidebar from "@/components/app-sidebar";
-import SimulationForm from "@/components/simulation-form";
-import MethodologyPage from "@/pages/methodology-page";
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import AppSidebar from "@/components/app-sidebar"
+import SimulationForm from "@/components/simulation-form"
+import MethodologyPage from "@/pages/methodology-page"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/sidebar"
 
 export default function App() {
   return (
@@ -28,5 +28,5 @@ export default function App() {
         </SidebarInset>
       </SidebarProvider>
     </BrowserRouter>
-  );
+  )
 }
