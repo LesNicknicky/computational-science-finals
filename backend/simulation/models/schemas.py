@@ -1,21 +1,19 @@
 from typing import Literal
 
-from click import FloatRange
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 RegionId = Literal[
-    "caraga", "calabarzon", "northern mindanao", "central visayaz", "ilocos"
+    "caraga", "calabarzon", "northern mindanao", "central visayas", "ilocos"
 ]
 GroundType = Literal[
-    "sand","loam","clay","gravel_dirt","partial_pavement","full_pavement"
+    "sand", "loam", "clay", "gravel_dirt", "partial_pavement", "full_pavement"
 ]
 RiskLevel = Literal["safe", "watch", "warning"]
-
 class SimulationRequest(BaseModel):
-    region:RegionId
-    groundType:GroundType
-    matureTrees: int
-    cutPercentage: float
+    region: RegionId
+    groundType: GroundType
+    matureTrees: int = Field(gt=0)
+    cutPercentage: float = Field(ge=0, le=100)
     rainSeed: int
 
 class MonthResult(BaseModel):

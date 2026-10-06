@@ -14,12 +14,16 @@ export async function runSimulation(
   return res.json() as Promise<SimulationResponse>
 }
 
-export async function exportPlot(req: SimulationRequest): Promise<Blob> {
-  const res = await fetch(`${BASE_URL}/export/plot`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-  })
-  if (!res.ok) throw new Error(`Export failed: ${res.status}`)
-  return res.blob()
+export async function exportPlot() {
+  const res = await fetch(`${BASE_URL}/export/plot`)
+  if (!res.ok) {
+    const { detail } = await res.json()
+    throw new Error(detail)
+  }
+  const url = URL.createObjectURL(await res.blob())
+  const a = document.createElement("a")
+  a.href = url
+  a.download = "simulation-report.svg"
+  a.click()
+  URL.revokeObjectURL(url)
 }
