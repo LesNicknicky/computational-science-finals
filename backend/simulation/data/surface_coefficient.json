@@ -1,0 +1,8 @@
+{
+  "sand":  {"hsg": "A", "cn": 39, "ks_cm_h": 11.78, "psi_cm": 4.95,  "porosity": 0.437},
+  "loam":  {"hsg": "B", "cn": 61, "ks_cm_h": 0.34,  "psi_cm": 8.89,  "porosity": 0.463},
+  "clay":  {"hsg": "D", "cn": 80, "ks_cm_h": 0.03,  "psi_cm": 31.63, "porosity": 0.475},
+  "gravel_or_dirt": {"hsg": "C", "cn": 89, "ks_cm_h": null},
+  "partial_pavement": {"cn_perv_from": "loam", "impervious_fraction": 0.5},
+  "full_pavement": {"cn": 98, "drainage_mm_day": null}
+}
