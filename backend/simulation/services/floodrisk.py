@@ -1,21 +1,20 @@
 import math
 
 STATUS_ORDER = ["safe","watch","warning"]
-CM_PER_H_TO_MM_PER_DAY = 240.0
+MM_PER_H_TO_MM_PER_DAY = 24.0
 
 def green_ampt_rate(ks: float, psi: float, d_theta:float, f_cum:float) -> float:
     """Eq 13, reference only. The daily step uses the limit f -> Ks"""
     return ks * (1.0 + psi * d_theta / f_cum)
 
-def daily_drainage_mm(*, ks_cm_h: float | None, qd_mm_day: float |None = None, pervious_fraction: float = 1.0) -> float:
-    """Eq 14. Soils/gravel/partial pavement use 240*Ks; full pavement uses qd.
-    pervious_fraction=1.0 reproduces the proposal exactly; for partial pavement
-    pass the pervious share (project-defined weighting)."""
-    if ks_cm_h is None:
+def daily_drainage_mm(*, ks_mm_h: float | None, qd_mm_day: float | None = None,
+                      pervious_fraction: float = 1.0) -> float:
+    """Eq 14. Soils/gravel/partial pavement use 24*Ks (Ks in mm/hr); full pavement uses qd."""
+    if ks_mm_h is None:
         if qd_mm_day is None:
             raise ValueError("full pavement needs qd_mm_day")
         return qd_mm_day
-    return CM_PER_H_TO_MM_PER_DAY * ks_cm_h * pervious_fraction
+    return MM_PER_H_TO_MM_PER_DAY * ks_mm_h * pervious_fraction
 
 def net_runoff_mm(q_mm: float, v_m3_day: float, area_m2: float) -> float:
     """Eq 11."""

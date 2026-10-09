@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "species": "Falcataria moluccana (falcata)",
+    "note": "Growth, maturity and volume use falcata, a fast plantation species; cutting-cycle values come from a dipterocarp forest. State this as an assumption in the limitations.",
+    "growth_fit": "Chapman-Richards f(t) = (1 - exp(-k*t))^p, least-squares fit to the normalized curve (t/t_mature)^0.4925 over 0..t_mature. Max abs error 0.082, RMSE 0.034; f(t_mature) = 0.918. k scales as 2.244 / t_mature."
+  },
+  "a_m_m3_tree_day": {
+    "value": 0.046,
+    "low": 0.0027,
+    "high": 1.18,
+    "source": "value: Marryanna et al. (2023); bounds: Jordan & Kline (1978) [verify year]"
+  },
+  "growth": {
+    "form": "chapman_richards",
+    "p": 0.7665,
+    "t_mature_years": {
+      "default": 10,
+      "low": 8,
+      "high": 12,
+      "source": "Alipon et al. (2016); default is the midpoint, project-defined"
+    },
+    "k_by_t_mature": {
+      "8": 0.2805,
+      "10": 0.2244,
+      "12": 0.187
+    },
+    "k_default": 0.2244,
+    "source": "curve: Uriarte & Pinol (1996), height = 7.9 * age^0.4925; form: Richards (1959); k and p fitted by the project"
+  },
+  "sigma": {
+    "default": 0.68,
+    "low": 0.61,
+    "high": 0.85,
+    "default_status": "audited value, project choice; confirm",
+    "points": [
+      {
+        "value": 0.61,
+        "basis": "COA 2012 sample (measured), as reported by PIDS"
+      },
+      {
+        "value": 0.68,
+        "basis": "COA 2013 audit (measured), as reported by the Senate Economic Planning Office"
+      },
+      {
+        "value": 0.82,
+        "basis": "government-reported 2015, via PIDS"
+      },
+      {
+        "value": 0.83,
+        "basis": "government-reported 2011-2014, via PIDS"
+      },
+      {
+        "value": 0.85,
+        "basis": "National Greening Program target, not an observation"
+      }
+    ],
+    "source": "titles, years and report numbers still to be verified"
+  },
+  "volume_equation": {
+    "form": "V = a + b * DBH^2 * MH",
+    "a": 0.06168,
+    "b": 4.555e-05,
+    "units": "unverified; check DBH and MH units and V units in the source",
+    "source": "Uriarte & Pinol (1996)"
+  }
+}
