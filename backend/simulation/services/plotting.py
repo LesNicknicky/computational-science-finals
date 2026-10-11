@@ -89,5 +89,5 @@ def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
                 cell.set_facecolor(RISK_FILL[result.prediction[row - 1].risk])
 
         buf = StringIO()
-        fig.savefig(buf, format="svg")
+        fig.savefig(buf, format="pdf")
         return buf.getvalue()

@@ -11,7 +11,7 @@ def _load(name):
 SURFACES = _load("surface_coefficient.json")
 SPECIES = _load("species_profile.json")
 RAINFALL = _load("rainfall_normals.json")
-PRESETS = _load("region_presets.json")  # your existing file
+
 
 LAMBDA = 0.2
 
@@ -28,15 +28,24 @@ BIOMASS_RECOVERED_BEFORE_NEXT_CUT = 0.70
 STATUS_ELEVATED = 0.5
 STATUS_WARNING = 1.0
 
-T0 = None                  # Eq 16, calibrate by sensitivity analysis
-RATE_OF_RISE_LIMIT = None  # Eq 16, project-defined, needs a value
+# --- PROVISIONAL demo values: placeholders, not sourced facts ---
+RAIN_ALPHA = 1.0           # gamma shape 1 (exponential daily rain); normals have no daily variance
+T0 = 100.0                 # Eq 16 (mm), calibrate by sensitivity analysis
+RATE_OF_RISE_LIMIT = 50.0  # Eq 16 (mm/day), project-defined
+
+# --- Still unset ---
 ALLOWABLE_CUT = None       # decide per cycle vs per year first
+TREE_DENSITY_PER_HA = 877
+
+
+class ConstantNotSet(ValueError):
+    """A needed constant has no sourced value yet."""
 
 
 def require(name: str, value):
     """Fail with the constant's name if it has not been set yet."""
     if value is None:
-        raise ValueError(f"Constant {name} is not set yet (see constants.py)")
+        raise ConstantNotSet(f"Constant {name} is not set yet (see constants.py)")
     return value
 
 
@@ -48,8 +57,10 @@ SOURCES = {
     "BIOMASS_REMOVED_PER_CYCLE": "Lasco et al. (2006)",
     "BIOMASS_RECOVERED_BEFORE_NEXT_CUT": "Lasco et al. (2006)",
     "STATUS_ELEVATED": "Project-defined (proposal 5.4)",
-    "STATUS_WARNING": "Project-defined (proposal 5.4)",
-    "T0": "Project-defined, unset: calibrate by sensitivity analysis",
-    "RATE_OF_RISE_LIMIT": "Project-defined, unset",
+    "STATUS_WARNING": "Project-defined (proposal 5.4)", 
+    "RAIN_ALPHA": "PROVISIONAL: assumption, exponential daily rain; test in sensitivity analysis",
+    "T0": "PROVISIONAL placeholder: calibrate by sensitivity analysis",
+    "RATE_OF_RISE_LIMIT": "PROVISIONAL placeholder: project-defined",
     "ALLOWABLE_CUT": "Project-defined, unset: per cycle vs per year undecided",
+   "TREE_DENSITY_PER_HA": "Quimio (2016), Annals of Tropical Research 38(2):30-51, Samar Island Natural Park; single site, applied to all regions (limitation)",
 }

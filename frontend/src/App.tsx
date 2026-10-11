@@ -1,29 +1,23 @@
+import type { CSSProperties } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import AppSidebar from "@/components/app-sidebar"
-import SimulationForm from "@/components/simulation-form"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import MethodologyPage from "@/pages/methodology-page"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import ResearchPage from "@/pages/research-pages"
+import SimulationPage from "@/pages/simulation-page"
 
 export default function App() {
   return (
     <BrowserRouter>
-      <SidebarProvider>
+      <SidebarProvider
+        style={{ "--sidebar-width": "4.5rem" } as CSSProperties}
+      >
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-14 items-center gap-2 border-b px-4">
-            <SidebarTrigger />
-            <h1 className="text-lg font-semibold">
-              Deforestation Offset Simulator
-            </h1>
-          </header>
-
           <Routes>
-            <Route path="/" element={<SimulationForm />} />
+            <Route path="/" element={<SimulationPage />} />
             <Route path="/methodology" element={<MethodologyPage />} />
+            <Route path="/research" element={<ResearchPage />} />
           </Routes>
         </SidebarInset>
       </SidebarProvider>

@@ -1,13 +1,7 @@
-// src/components/prediction-area-chart.tsx
-import { useMemo, useState } from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card"
+import { useState } from "react"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import { CloudRain } from "lucide-react"
+import { CardTitle, GlassCard } from "@/components/glass-card"
 import {
   ChartContainer,
   ChartLegend,
@@ -15,113 +9,101 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "../components/ui/chart"
+} from "@/components/ui/chart"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select"
-import type { SimulationResponse } from "../types/simulation"
+} from "@/components/ui/select"
+import type { MonthResult } from "@/types/dashboard"
 
-const chartConfig = {
-  recovered: {
-    label: "Land's ability to soak up rain",
-    color: "var(--chart-1)",
-  },
-  rain: { label: "Rainfall (vs. wettest month)", color: "#eb6834" },
+const config = {
+  rain: { label: "Rain", color: "#d9773c" },
+  soak: { label: "Ground soak-up", color: "#12a36e" },
 } satisfies ChartConfig
 
-// Item values are the labels themselves so the Select shows readable text
-const RANGES: Record<string, number | null> = {
-  "Whole run": null,
-  "First 6 months": 6,
-  "First 3 months": 3,
-}
+const RANGES = [
+  { value: "all", label: "Whole year" },
+  { value: "1", label: "Months 1–3" },
+  { value: "2", label: "Months 4–6" },
+  { value: "3", label: "Months 7–9" },
+  { value: "4", label: "Months 10–12" },
+]
 
 export function PredictionAreaChart({
   months,
+  activeIndex,
 }: {
-  months: SimulationResponse["months"]
+  months: MonthResult[]
+  activeIndex: number
 }) {
-  const [range, setRange] = useState<string>("Whole run")
-
-  const data = useMemo(() => {
-    const wettest = Math.max(...months.map((m) => m.rainfallMm), 1)
-    const rows = months.map((m, i) => ({
-      month: i,
-      recovered: Math.round(m.absorptionRecoveredPct),
-      rain: Math.round((m.rainfallMm / wettest) * 100),
-    }))
-    const limit = RANGES[range]
-    return limit === null ? rows : rows.slice(0, limit + 1)
-  }, [months, range])
+  const [range, setRange] = useState("all")
+  // months after the active one are null, so the area "draws itself" while playing
+  const data = months.map((m, i) => ({
+    label: `M${m.month}`,
+    rain: i <= activeIndex ? m.rainPct : null,
+    soak: i <= activeIndex ? m.soakPct : null,
+  }))
+  const q = Number(range)
+  const view = range === "all" ? data : data.slice((q - 1) * 3, q * 3)
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-start justify-between gap-2">
-        <div className="space-y-1">
-          <CardTitle>How the land recovers</CardTitle>
-          <CardDescription>
-            As new trees grow, the land soaks up more rain. Flooding is most
-            likely in the rainy months.
-          </CardDescription>
-        </div>
-        <Select value={range} onValueChange={(v) => v && setRange(v)}>
-          <SelectTrigger className="w-40">
+    <GlassCard className="min-h-0 flex-2 flex-col">
+      <div className="flex items-start justify-between">
+        <CardTitle icon={CloudRain}>
+          Rain vs. how much the ground can soak up
+        </CardTitle>
+        {/* Base UI Select passes `string | null`, so guard the null */}
+        <Select
+          items={RANGES}
+          value={range}
+          onValueChange={(v) => v && setRange(v)}
+        >
+          <SelectTrigger
+            size="sm"
+            className="w-32.5 bg-white/60"
+            aria-label="Time range"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {Object.keys(RANGES).map((label) => (
-              <SelectItem key={label} value={label}>
-                {label}
+            {RANGES.map((r) => (
+              <SelectItem key={r.value} value={r.value}>
+                {r.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-62.5 w-full"
-        >
-          <AreaChart data={data}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(v) => `M${v}`}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  indicator="dot"
-                  labelFormatter={(v) => `Month ${v}`}
-                />
-              }
-            />
-            <Area
-              dataKey="rain"
-              type="natural"
-              stroke="var(--color-rain)"
-              fill="var(--color-rain)"
-              fillOpacity={0.15}
-            />
-            <Area
-              dataKey="recovered"
-              type="natural"
-              stroke="var(--color-recovered)"
-              fill="var(--color-recovered)"
-              fillOpacity={0.15}
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+      </div>
+      <ChartContainer config={config} className="min-h-0 w-full flex-1">
+        <AreaChart data={view} margin={{ left: 0, right: 8, top: 8 }}>
+          <CartesianGrid vertical={false} strokeDasharray="3 3" />
+          <XAxis dataKey="label" tickLine={false} axisLine={false} />
+          <YAxis hide domain={[0, 100]} />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <Area
+            dataKey="soak"
+            type="monotone"
+            stroke="var(--color-soak)"
+            fill="var(--color-soak)"
+            fillOpacity={0.25}
+            strokeWidth={2.5}
+            isAnimationActive={false}
+          />
+          <Area
+            dataKey="rain"
+            type="monotone"
+            stroke="var(--color-rain)"
+            fill="var(--color-rain)"
+            fillOpacity={0.18}
+            strokeWidth={2.5}
+            isAnimationActive={false}
+          />
+          <ChartLegend content={<ChartLegendContent />} />
+        </AreaChart>
+      </ChartContainer>
+    </GlassCard>
   )
 }

@@ -129,3 +129,14 @@
     @apply font-sans;
     }
 }
+@keyframes app-bg-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes blob-float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(70px, 50px); } }
+
+.app-bg {
+  background: linear-gradient(120deg, #e9f0d8, #d4ead6, #eef3df, #cfe6d3);
+  background-size: 300% 300%;
+  animation: app-bg-shift 18s ease infinite;
+}
+.blob { position: absolute; border-radius: 9999px; pointer-events: none; animation: blob-float 14s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) { .app-bg, .blob { animation: none; } }

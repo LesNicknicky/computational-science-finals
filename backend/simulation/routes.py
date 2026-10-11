@@ -1,15 +1,10 @@
-import random
-
 from fastapi import APIRouter, HTTPException, Response
 
-from .models.schemas import (
-    MonthResult,
-    PredictionRow,
-    RiskLevel,
-    SimulationRequest,
-    SimulationResponse,
-)
+from . import constants as C
+from .models.schemas import SimulationRequest, SimulationResponse
+from .services.params import build_run_args
 from .services.plotting import build_report_svg
+from .services.simulator import run_year
 
 router = APIRouter()
 
@@ -17,59 +12,23 @@ router = APIRouter()
 last_run: tuple[SimulationRequest, SimulationResponse] | None = None
 
 
-def risk_from_index(index: float) -> RiskLevel:
-    if index >= 60:
-        return "warning"
-    if index >= 30:
-        return "watch"
-    return "safe"
-
-
 @router.post("/simulate", response_model=SimulationResponse)
 def simulate(req: SimulationRequest) -> SimulationResponse:
     global last_run
-
-    rng = random.Random(req.rainSeed)
-    trees_to_cut = round(req.matureTrees * req.cutPercentage / 100)
-
-    months: list[MonthResult] = []
-    prediction: list[PredictionRow] = []
-    cumulative = 0.0
-
-    for m in range(1, 13):
-        rain = rng.uniform(50, 400)
-        recovered = m * 100 / 12
-        runoff = rain * (1 - recovered / 100) * req.cutPercentage / 100
-        cumulative += runoff
-        index = (rain / 4) * (1 - recovered / 100)
-        risk = risk_from_index(index)
-
-        months.append(
-            MonthResult(
-                month=m,
-                rainfallMm=round(rain, 1),
-                absorptionRecoveredPct=round(recovered, 1),
-                cumulativeRunoff=round(cumulative, 1),
-                riseRate=round(runoff, 1),
-                risk=risk,
-            )
+    ground = "gravel_or_dirt" if req.groundType == "gravel_dirt" else req.groundType
+    try:
+        args = build_run_args(
+            region=req.region,
+            ground_type=ground,
+            n_trees=req.matureTrees,
+            cut_fraction=req.cutPercentage / 100,
+            seed=req.rainSeed,
         )
-        prediction.append(
-            PredictionRow(
-                month=m,
-                recoveredPct=round(recovered, 1),
-                riskIndex=round(index, 1),
-                risk=risk,
-            )
-        )
+        out = run_year(**args)
+    except C.ConstantNotSet as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    result = SimulationResponse(
-        treesToCut=trees_to_cut,
-        saplingsNeeded=trees_to_cut * 3,
-        leadTimeMonths=6,
-        months=months,
-        prediction=prediction,
-    )
+    result = SimulationResponse(**out)
     last_run = (req, result)
     return result
 
