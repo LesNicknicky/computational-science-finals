@@ -1,18 +1,37 @@
-import { CircleCheck, TriangleAlert, Zap } from "lucide-react"
+import { CircleCheck, TriangleAlert, Waves } from "lucide-react"
+import { STATUS_COPY, rainIcon, rainText, rainWord } from "@/lib/copy"
 import { cn } from "@/lib/utils"
-import type { MonthResult } from "@/types/dashboard"
+import type { MonthResult, MonthStatus } from "@/types/dashboard"
 
-const ICON = {
-  safe: <CircleCheck className="size-6 text-emerald-600" aria-label="Safe" />,
-  careful: (
-    <TriangleAlert className="size-6 text-amber-500" aria-label="Be careful" />
-  ),
-  danger: <Zap className="size-6 text-red-500" aria-label="Danger" />,
+// Soft pastel badges: calm to look at, still clear at a glance.
+const BADGE: Record<
+  MonthStatus,
+  { icon: React.ElementType; badge: string; text: string; ring: string }
+> = {
+  safe: {
+    icon: CircleCheck,
+    badge: "bg-emerald-100 text-emerald-600",
+    text: "text-emerald-700",
+    ring: "ring-emerald-400",
+  },
+  careful: {
+    icon: TriangleAlert,
+    badge: "bg-amber-100 text-amber-600",
+    text: "text-amber-600",
+    ring: "ring-amber-400",
+  },
+  danger: {
+    icon: Waves,
+    badge: "bg-red-100 text-red-500",
+    text: "text-red-600",
+    ring: "ring-red-400",
+  },
 }
-const RING = {
-  safe: "ring-emerald-500",
-  careful: "ring-amber-500",
-  danger: "ring-red-500",
+
+const SENTENCE: Record<MonthStatus, string> = {
+  safe: "the ground keeps up with the rain.",
+  careful: "the ground is close to its limit.",
+  danger: "flooding is likely.",
 }
 
 interface Props {
@@ -22,26 +41,63 @@ interface Props {
 }
 
 export function MonthStrip({ months, activeIndex, playing }: Props) {
+  const active = months[activeIndex] ?? months[months.length - 1]
+  const ActiveIcon = BADGE[active.status].icon
+
   return (
-    <div className="flex min-h-0 flex-1 gap-1.5">
-      {months.map((m, i) => (
-        <div
-          key={m.month}
-          className={cn(
-            "flex min-w-0 flex-1 flex-col items-center justify-center gap-1.5 rounded-xl bg-white/50 py-2 transition-all duration-300",
-            i > activeIndex && "opacity-30",
-            playing &&
-              i === activeIndex &&
-              cn("bg-white/90 ring-2", RING[m.status])
-          )}
-        >
-          <span className="text-xs text-muted-foreground">M{m.month}</span>
-          {ICON[m.status]}
-          <span className="text-sm font-semibold">
-            {Math.round(m.soakPct)}%
-          </span>
-        </div>
-      ))}
+    <div className="flex flex-col gap-2.5">
+      {/* One small tile per month: just a status badge and a rain icon. */}
+      <div className="grid grid-cols-12 gap-1.5">
+        {months.map((m, i) => {
+          const b = BADGE[m.status]
+          const Icon = b.icon
+          const Rain = rainIcon(m.rainPct)
+          return (
+            <div
+              key={m.month}
+              title={`Month ${m.month}: ${rainWord(m.rainPct)} rain, ${STATUS_COPY[m.status].label}`}
+              className={cn(
+                "flex min-w-0 flex-col items-center gap-1.5 rounded-xl bg-white/50 py-2 transition-all duration-300",
+                i > activeIndex && "opacity-30",
+                playing &&
+                  i === activeIndex &&
+                  cn("-translate-y-0.5 bg-white/90 shadow-md ring-2", b.ring)
+              )}
+            >
+              <span className="text-[11px] text-muted-foreground">
+                M{m.month}
+              </span>
+              <span
+                className={cn(
+                  "grid size-8 place-items-center rounded-full",
+                  b.badge
+                )}
+              >
+                <Icon className="size-4.5" aria-label={STATUS_COPY[m.status].label} />
+              </span>
+              <Rain
+                className={cn("size-4", rainText(m.rainPct))}
+                aria-label={`${rainWord(m.rainPct)} rain`}
+              />
+            </div>
+          )
+        })}
+      </div>
+
+      {/* The details, said once, in words, for the month being shown. */}
+      <div className="flex items-center gap-2 rounded-xl bg-white/50 px-3 py-2 text-sm">
+        <ActiveIcon
+          className={cn("size-4 shrink-0", BADGE[active.status].text)}
+          aria-hidden
+        />
+        <span>
+          <b>Month {active.month}</b> · {rainWord(active.rainPct)} rain ·{" "}
+          <b className={BADGE[active.status].text}>
+            {STATUS_COPY[active.status].label}
+          </b>
+          : {SENTENCE[active.status]}
+        </span>
+      </div>
     </div>
   )
 }

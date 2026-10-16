@@ -166,6 +166,26 @@
     "mu_w_annual_mm": 25.4,
     "status": "annual only; monthly table still needed for Eq 5"
   },
-  "calabarzon": null,
-  "northern_mindanao": null
+  "calabarzon": {
+    "station": "Infanta, Quezon",
+    "period": "1991-2020",
+    "months": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    "monthly_total_mm": [348.9, 289.0, 220.7, 175.0, 203.7, 233.4, 265.6, 193.0, 251.1, 498.6, 561.8, 746.3],
+    "rainy_days": [22, 15, 14, 11, 13, 15, 16, 13, 15, 21, 23, 25],
+    "p_w": [0.71, 0.536, 0.452, 0.367, 0.419, 0.5, 0.516, 0.419, 0.5, 0.677, 0.767, 0.806],
+    "mu_w_mm": [15.86, 19.27, 15.76, 15.91, 15.67, 15.56, 16.6, 14.85, 16.74, 23.74, 24.43, 29.85],
+    "alpha": null,
+    "status": "from PAGASA normals; rainy day = at least 1 mm"
+  },
+   "northern_mindanao": {
+    "station": "Malaybalay, Bukidnon",
+    "period": "1991-2020",
+    "months": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+    "monthly_total_mm": [174.8, 112.8, 104.1, 118.3, 240.1, 319.5, 350.2, 300.7, 290.8, 292.1, 177.6, 160.9],
+    "rainy_days": [14, 10, 10, 10, 17, 20, 21, 19, 20, 19, 15, 14],
+    "p_w": [0.452, 0.357, 0.323, 0.333, 0.548, 0.667, 0.677, 0.613, 0.667, 0.613, 0.5, 0.452],
+    "mu_w_mm": [12.49, 11.28, 10.41, 11.83, 14.12, 15.98, 16.68, 15.83, 14.54, 15.37, 11.84, 11.49],
+    "alpha": null,
+    "status": "from PAGASA normals; rainy day = at least 1 mm; station is at 689.5 m elevation in Bukidnon (highland), Lumbia (Cagayan de Oro) is the lowland alternative and was not retrieved"
+  }
 }

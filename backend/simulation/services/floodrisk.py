@@ -3,6 +3,11 @@ import math
 STATUS_ORDER = ["safe","watch","warning"]
 MM_PER_H_TO_MM_PER_DAY = 24.0
 
+def flushed_depth_mm(q_net: float) -> float:
+    """Eq 12, full-pavement variant: no infiltration, so nothing carries over.
+    The day's net runoff is the flood depth; gutters/storm drains clear it within the day."""
+    return max(0.0, q_net)
+
 def green_ampt_rate(ks: float, psi: float, d_theta:float, f_cum:float) -> float:
     """Eq 13, reference only. The daily step uses the limit f -> Ks"""
     return ks * (1.0 + psi * d_theta / f_cum)

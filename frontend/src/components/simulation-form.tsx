@@ -1,4 +1,4 @@
-import { Layers, MapPin, TreePine } from "lucide-react"
+import { Info, Layers, MapPin, TreePine } from "lucide-react"
 import { CardTitle, GlassCard } from "@/components/glass-card"
 import { RegionMap } from "@/components/region-map"
 import { Slider } from "@/components/ui/slider"
@@ -13,6 +13,8 @@ export interface SimulationFormProps {
   groundOptions: { value: string; label: string }[]
   cutPercent: number
   onCutChange: (value: number) => void
+  /** Message from the backend when /simulate fails (e.g. "Full pavement is not modeled yet") */
+  error?: string | null
 }
 
 export function SimulationForm(p: SimulationFormProps) {
@@ -74,6 +76,16 @@ export function SimulationForm(p: SimulationFormProps) {
           aria-label="Percent of trees to cut"
         />
       </div>
+
+      {p.error && (
+        <div
+          role="alert"
+          className="mt-3 flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50/70 p-3 text-[13px] text-amber-900"
+        >
+          <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
+          <span>{p.error}</span>
+        </div>
+      )}
     </GlassCard>
   )
 }

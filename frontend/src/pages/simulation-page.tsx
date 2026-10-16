@@ -4,7 +4,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import { GROUND_TYPES } from "@/data/ground-types"
 import { REGIONS as PRESETS } from "@/data/regions"
-import { runSimulation } from "@/lib/api"
+import { exportPdf, runSimulation } from "@/lib/api"
 import { toDashboardResult } from "@/lib/to-dashboard"
 import type { SimulationResult } from "@/types/dashboard"
 import type { GroundType, RegionId } from "@/types/simulation"
@@ -61,6 +61,11 @@ export default function SimulationPage() {
       {result ? (
         <SimulationDashboard
           result={result}
+          onExport={() =>
+            exportPdf()
+              .then(() => setError(null))
+              .catch((e: Error) => setError(e.message))
+          }
           form={{
             regionId: region,
             onRegionChange: (id) => setRegion(id as RegionId),

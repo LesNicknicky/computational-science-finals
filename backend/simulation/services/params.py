@@ -24,9 +24,8 @@ def surface_params(ground_type: str) -> dict:
         }
     if ground_type == "full_pavement":
         row = s[ground_type]
-        qd = C.require("full_pavement.drainage_mm_day", row["drainage_mm_day"])
-        return {"cn": row["cn"], "drainage_mm_day": daily_drainage_mm(ks_mm_h=None, qd_mm_day=qd)}
-    raise ValueError(f"unknown ground type '{ground_type}'")
+        # No infiltration and no sourced drainage rate: storm-drained, runoff only (see Limitations)
+        return {"cn": row["cn"], "drainage_mm_day": 0.0, "storm_drained": True}
 
 
 def rain_params(region: str) -> list[tuple[float, float, float]]:

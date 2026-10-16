@@ -2,12 +2,13 @@ import numpy as np
 from .runoff import daily_rainfall, runoff_depth
 from .absorption import daily_absorption_m3, absorption_recovered_pct
 from .sapling_growth import saplings_needed, lead_time_years
-from .floodrisk import (net_runoff_mm, ponded_depth_mm, rate_of_rise, threshold_mm, risk_index, status_from_index, escalate, recession_days, STATUS_ORDER)
+from .floodrisk import (net_runoff_mm, ponded_depth_mm, flushed_depth_mm, rate_of_rise, threshold_mm, risk_index, status_from_index, escalate, recession_days, STATUS_ORDER)
 
 DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_m, sigma, k, p, lam, t0, low_cut, high_cut, rise_limit, rain, seed):
-    """rain: 12 tuples (p_wet, alpha, mean_wet_mm), one per month."""
+def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_m, sigma, k, p, lam, t0, low_cut, high_cut, rise_limit, rain, seed, storm_drained=False):
+    """rain: 12 tuples (p_wet, alpha, mean_wet_mm), one per month.
+    storm_drained=True (full pavement): no infiltration, no carry-over between days."""
     rng = np.random.default_rng(seed)
     n_cut = round(cut_fraction * n_trees)
     n_sap = saplings_needed(ratio_r, n_cut)
@@ -28,7 +29,11 @@ def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_
         worst, peak_i, peak_c, peak_rise = "safe", 0.0, 0.0, 0.0
         for p_d in rain_mm:
             q = runoff_depth(float(p_d), cn, lam)
-            c = ponded_depth_mm(c_prev, net_runoff_mm(q, v, area_m2), drainage_mm_day)
+            q_net = net_runoff_mm(q, v, area_m2)
+            if storm_drained:
+                c = flushed_depth_mm(q_net)
+            else:
+                c = ponded_depth_mm(c_prev, q_net, drainage_mm_day)
             i = risk_index(c, thr)
             status = status_from_index(i, low_cut, high_cut)
             rise = rate_of_rise(c, c_prev)
@@ -45,7 +50,8 @@ def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_
             "riseRate": peak_rise,
             "risk": worst,
             "peakRiskIndex": peak_i,
-            "floodDurationDays": recession_days(peak_c, drainage_mm_day),
+            # storm-drained surfaces: duration not modeled (would otherwise be C/0 = inf)
+            "floodDurationDays": 0.0 if storm_drained else recession_days(peak_c, drainage_mm_day),
         })
 
     prediction = [

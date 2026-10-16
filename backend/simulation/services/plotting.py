@@ -1,5 +1,6 @@
-from datetime import date
-from io import StringIO
+from datetime import datetime
+from io import BytesIO, StringIO
+from typing import IO
 
 from matplotlib import rc_context
 from matplotlib.figure import Figure
@@ -13,6 +14,20 @@ def _pretty(value: str) -> str:
     return value.replace("_", " ").title()
 
 
+def _lead_time(months: float | None) -> str:
+    """Days under 7, weeks under 30 days, then months (30 days each)."""
+    if months is None:
+        return "Cannot be offset"
+    days = max(1, round(months * 30))
+    if days < 7:
+        return f"{days} day{'s' if days != 1 else ''}"
+    if days < 30:
+        weeks = days // 7
+        return f"{weeks} week{'s' if weeks != 1 else ''}"
+    n = days // 30
+    return f"{n} month{'s' if n != 1 else ''}"
+
+
 def _block(fig: Figure, x: float, y: float, title: str, rows: list[tuple[str, str]]) -> None:
     fig.text(x, y, title, fontsize=11, fontweight="bold")
     for i, (label, value) in enumerate(rows, start=1):
@@ -21,16 +36,18 @@ def _block(fig: Figure, x: float, y: float, title: str, rows: list[tuple[str, st
         fig.text(x + 0.19, line_y, value, fontsize=9)
 
 
-def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
+def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: IO) -> None:
+    """Draw the A4 report once and save it as `fmt` ("svg" or "pdf") into `buf`."""
     months = [m.month for m in result.months]
     rain = [m.rainfallMm for m in result.months]
     recovered = [m.absorptionRecoveredPct for m in result.months]
 
-    with rc_context({"svg.fonttype": "none", "font.family": "sans-serif"}):
+    # fonttype 42 keeps the PDF text real (selectable) instead of outlines
+    with rc_context({"svg.fonttype": "none", "pdf.fonttype": 42, "font.family": "sans-serif"}):
         fig = Figure(figsize=(8.27, 11.69))  # A4 portrait
 
         fig.text(0.06, 0.965, "Reforestation Offset Simulation Report", fontsize=16, fontweight="bold")
-        fig.text(0.06, 0.945, f"Generated {date.today():%B %d, %Y}", fontsize=9, color="#555555")
+        fig.text(0.06, 0.945, f"Generated {datetime.now().astimezone():%B %d, %Y}", fontsize=9, color="#555555")
 
         _block(fig, 0.06, 0.915, "Inputs", [
             ("Region", _pretty(req.region)),
@@ -42,11 +59,10 @@ def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
         _block(fig, 0.52, 0.915, "Results", [
             ("Trees to cut", f"{result.treesToCut:,}"),
             ("Saplings needed", f"{result.saplingsNeeded:,}"),
-            ("Lead time", f"{result.leadTimeMonths} months"),
+            ("Plant first", _lead_time(result.leadTimeMonths)),
         ])
 
-   
-        ax = fig.add_axes([0.10, 0.50, 0.80, 0.24])
+        ax = fig.add_axes((0.10, 0.50, 0.80, 0.24))
         ax.fill_between(months, recovered, alpha=0.35, color="#16a34a")
         ax.plot(months, recovered, color="#16a34a", linewidth=2)
         ax.set_xlim(1, 12)
@@ -62,7 +78,7 @@ def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
         ax2.set_ylabel("Rainfall (mm)", color="#2563eb")
 
         # 12-month prediction table
-        ax_t = fig.add_axes([0.06, 0.05, 0.88, 0.38])
+        ax_t = fig.add_axes((0.06, 0.05, 0.88, 0.38))
         ax_t.axis("off")
         ax_t.set_title("12-month prediction", fontsize=11, loc="left")
 
@@ -88,6 +104,16 @@ def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
             elif col == len(header) - 1:
                 cell.set_facecolor(RISK_FILL[result.prediction[row - 1].risk])
 
-        buf = StringIO()
-        fig.savefig(buf, format="pdf")
-        return buf.getvalue()
+        fig.savefig(buf, format=fmt)
+
+
+def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
+    buf = StringIO()
+    _render(req, result, "svg", buf)
+    return buf.getvalue()
+
+
+def build_report_pdf(req: SimulationRequest, result: SimulationResponse) -> bytes:
+    buf = BytesIO()
+    _render(req, result, "pdf", buf)
+    return buf.getvalue()

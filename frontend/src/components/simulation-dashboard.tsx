@@ -1,4 +1,4 @@
-import { CalendarDays, Play, ShieldCheck, Square } from "lucide-react"
+import { CalendarDays, Download, Play, ShieldCheck, Square } from "lucide-react"
 import { GlassCard, CardTitle } from "@/components/glass-card"
 import { CutVsPlanted, HighlightTiles } from "@/components/highlight-tiles"
 import { MonthStrip } from "@/components/month-strip"
@@ -16,10 +16,11 @@ import type { SimulationResult } from "@/types/dashboard"
 interface Props {
   result: SimulationResult
   form: SimulationFormProps
+  onExport?: () => void
 }
 
 // Page content only. The SidebarProvider + AppSidebar live once, in App.tsx.
-export function SimulationDashboard({ result, form }: Props) {
+export function SimulationDashboard({ result, form, onExport }: Props) {
   // passing `result` resets to the full year whenever a new result arrives
   const { index, playing, toggle } = usePlaySequence(
     result.months.length,
@@ -88,6 +89,15 @@ export function SimulationDashboard({ result, form }: Props) {
                 {playing ? <Square /> : <Play />}{" "}
                 {playing ? "Stop" : "Play the year"}
               </Button>
+              {onExport && (
+                <Button
+                  variant="outline"
+                  onClick={onExport}
+                  className="rounded-full bg-white/60"
+                >
+                  <Download /> Export PDF
+                </Button>
+              )}
             </div>
           </GlassCard>
 

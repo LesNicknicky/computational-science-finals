@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Response
 from . import constants as C
 from .models.schemas import SimulationRequest, SimulationResponse
 from .services.params import build_run_args
-from .services.plotting import build_report_svg
+from .services.plotting import build_report_pdf, build_report_svg
 from .services.simulator import run_year
 
 router = APIRouter()
@@ -43,4 +43,17 @@ def export_plot() -> Response:
         content=build_report_svg(req, result),
         media_type="image/svg+xml",
         headers={"Content-Disposition": 'attachment; filename="simulation-report.svg"'},
+    )
+
+
+@router.get("/export/pdf")
+def export_pdf() -> Response:
+    if last_run is None:
+        raise HTTPException(status_code=404, detail="No simulation has been run yet.")
+
+    req, result = last_run
+    return Response(
+        content=build_report_pdf(req, result),
+        media_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="simulation-report.pdf"'},
     )

@@ -1,3 +1,4 @@
+import { CloudDrizzle, CloudRain, CloudRainWind } from "lucide-react"
 import type { MonthResult, MonthStatus } from "@/types/dashboard"
 
 export const STATUS_COPY: Record<MonthStatus, { label: string; risk: string }> =
@@ -9,6 +10,13 @@ export const STATUS_COPY: Record<MonthStatus, { label: string; risk: string }> =
 
 export const rainWord = (pct: number) =>
   pct >= 70 ? "Heavy" : pct >= 35 ? "Moderate" : "Light"
+
+// Same thresholds as rainWord, so the word, icon and color always agree.
+export const rainIcon = (pct: number) =>
+  pct >= 70 ? CloudRainWind : pct >= 35 ? CloudRain : CloudDrizzle
+
+export const rainText = (pct: number) =>
+  pct >= 70 ? "text-sky-700" : pct >= 35 ? "text-sky-600" : "text-sky-500"
 
 const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? "" : "s"}`
 
