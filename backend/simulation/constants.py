@@ -57,10 +57,13 @@ SOURCES = {
     "BIOMASS_REMOVED_PER_CYCLE": "Lasco et al. (2006)",
     "BIOMASS_RECOVERED_BEFORE_NEXT_CUT": "Lasco et al. (2006)",
     "STATUS_ELEVATED": "Project-defined (proposal 5.4)",
-    "STATUS_WARNING": "Project-defined (proposal 5.4)", 
-    "RAIN_ALPHA": "PROVISIONAL: assumption, exponential daily rain; test in sensitivity analysis",
+    "STATUS_WARNING": "Project-defined (proposal 5.4)",
+    # CHANGED: note now reflects the alpha decision
+    "RAIN_ALPHA": "PROVISIONAL project-defined default of 1.0 (exponential daily rain); sensitivity range 0.43-1.01 from Bermudez et al. (2017), Table 1",
     "T0": "PROVISIONAL placeholder: calibrate by sensitivity analysis",
     "RATE_OF_RISE_LIMIT": "PROVISIONAL placeholder: project-defined",
     "ALLOWABLE_CUT": "Project-defined, unset: per cycle vs per year undecided",
-   "TREE_DENSITY_PER_HA": "Quimio (2016), Annals of Tropical Research 38(2):30-51, Samar Island Natural Park; single site, applied to all regions (limitation)",
+    "TREE_DENSITY_PER_HA": "Quimio (2016), Annals of Tropical Research 38(2):30-51, Samar Island Natural Park; single site, applied to all regions (limitation)",
+    # CHANGED: new entry for full pavement drainage
+    "FULL_PAVEMENT_DRAINAGE": "PROVISIONAL, borrowed: 5 mm/h x 24 = 120 mm/day from international urban flood-modeling studies; primary sources to be confirmed; test 5-50 mm/h (see surface_coefficient.json)",
 }

@@ -6,26 +6,27 @@ from .floodrisk import (net_runoff_mm, ponded_depth_mm, flushed_depth_mm, rate_o
 
 DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_m, sigma, k, p, lam, t0, low_cut, high_cut, rise_limit, rain, seed, storm_drained=False):
+def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_m, sigma, k, p, lam, t0, low_cut, high_cut, rise_limit, rain, seed, storm_drained=False, planting_lead_months=0.0):
     """rain: 12 tuples (p_wet, alpha, mean_wet_mm), one per month.
     storm_drained=True (full pavement): no infiltration, no carry-over between days."""
     rng = np.random.default_rng(seed)
     n_cut = round(cut_fraction * n_trees)
     n_sap = saplings_needed(ratio_r, n_cut)
     lead = lead_time_years(n_cut, n_sap, sigma, k, p)
-    tau0 = lead if lead is not None else 0.0     # cohort already this old at the cut
+    tau0 = planting_lead_months / 12.0   # cohort age (years) at the cut; 0 = planted at the cut
 
     c_prev = 0.0
     months = []
     for m, days in enumerate(DAYS_IN_MONTH):
         p_wet, alpha, mean_wet = rain[m]
         rain_mm = daily_rainfall(days, p_wet, alpha, mean_wet, rng)
+        rain_mm = daily_rainfall(days, p_wet, alpha, mean_wet, rng)
 
         v = daily_absorption_m3(n_trees=n_trees, n_cut=n_cut, n_saplings=n_sap, a_m=a_m,
                                 sigma=sigma, tau_years=tau0 + m / 12, k=k, p=p)
+        v = min(v, n_trees * a_m)   # never absorb more than the pre-cut forest did
         rho = absorption_recovered_pct(v, n_trees, a_m)
         thr = threshold_mm(t0, rho)
-
         worst, peak_i, peak_c, peak_rise = "safe", 0.0, 0.0, 0.0
         for p_d in rain_mm:
             q = runoff_depth(float(p_d), cn, lam)

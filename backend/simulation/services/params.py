@@ -24,8 +24,14 @@ def surface_params(ground_type: str) -> dict:
         }
     if ground_type == "full_pavement":
         row = s[ground_type]
-        # No infiltration and no sourced drainage rate: storm-drained, runoff only (see Limitations)
-        return {"cn": row["cn"], "drainage_mm_day": 0.0, "storm_drained": True}
+        # CHANGED: no Ks (impervious). Drainage is the borrowed storm-drain rate,
+        # already in mm/day (5 mm/h x 24), so it does NOT go through daily_drainage_mm.
+        # See surface_coefficient.json and Limitations.
+        return {
+            "cn": row["cn"],
+            "drainage_mm_day": C.require("full_pavement drainage_mm_day", row["drainage_mm_day"]),
+        }
+    raise ValueError(f"unknown ground type '{ground_type}'")  # CHANGED: no silent None
 
 
 def rain_params(region: str) -> list[tuple[float, float, float]]:
@@ -54,7 +60,7 @@ def species_params(t_mature_years: int | None = None) -> dict:
 
 def build_run_args(*, region: str, ground_type: str, n_trees: int, cut_fraction: float,
                    seed: int, forest_type: str = "natural",
-                   t_mature_years: int | None = None) -> dict:
+                   t_mature_years: int | None = None, planting_lead_months: float = 0.0) -> dict:
     """Everything run_year needs, from the constants and data files."""
     if forest_type not in C.REPLACEMENT_RATIO:
         raise ValueError(f"unknown forest type '{forest_type}'")
@@ -65,6 +71,8 @@ def build_run_args(*, region: str, ground_type: str, n_trees: int, cut_fraction:
         n_trees=n_trees, cut_fraction=cut_fraction, seed=seed,
         ratio_r=C.REPLACEMENT_RATIO[forest_type],
         cn=surface["cn"], drainage_mm_day=surface["drainage_mm_day"],
+        storm_drained=surface.get("storm_drained", False),
+        planting_lead_months=planting_lead_months,
         area_m2=n_trees / density * 10_000.0,
         lam=C.LAMBDA, low_cut=C.STATUS_ELEVATED, high_cut=C.STATUS_WARNING,
         t0=C.require("T0", C.T0),
