@@ -1,5 +1,5 @@
 import {
-  ArrowDown,
+  ArrowRight,
   Axe,
   Droplets,
   Info,
@@ -15,6 +15,7 @@ import {
   rainText,
   rainWord,
 } from "@/lib/copy"
+import { monthShort } from "@/lib/months"
 import type { MonthResult, SimulationResult } from "@/types/dashboard"
 
 function Tile({
@@ -31,10 +32,14 @@ function Tile({
   valueClass?: string
 }) {
   return (
-    <GlassCard>
+    <GlassCard className="px-3 py-2.5">
       <CardTitle icon={icon}>{title}</CardTitle>
-      <div className={`text-[22px] font-bold ${valueClass ?? ""}`}>{value}</div>
-      <div className="text-xs text-muted-foreground">{sub}</div>
+      <div className="-mt-1 flex flex-wrap items-baseline gap-x-1.5">
+        <span className={`text-xl leading-tight font-extrabold ${valueClass ?? ""}`}>
+          {value}
+        </span>
+        <span className="text-[11px] text-muted-foreground">{sub}</span>
+      </div>
     </GlassCard>
   )
 }
@@ -47,12 +52,12 @@ export function HighlightTiles({
   result: SimulationResult
 }) {
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-2.5">
       <Tile
         icon={rainIcon(month.rainPct)}
         title="Rain"
         value={rainWord(month.rainPct)}
-        sub={`Month ${month.month}`}
+        sub={`in ${monthShort(month.month)}`}
         valueClass={rainText(month.rainPct)}
       />
       <Tile
@@ -65,7 +70,7 @@ export function HighlightTiles({
         icon={ShieldCheck}
         title="Flood chance"
         value={STATUS_COPY[month.status].risk}
-        sub={`Month ${month.month}`}
+        sub={`in ${monthShort(month.month)}`}
         valueClass={STATUS_TEXT[month.status]}
       />
       <Tile
@@ -85,72 +90,63 @@ export function CutVsPlanted({ result }: { result: SimulationResult }) {
   const n = (v: number) => v.toLocaleString("en-US")
 
   return (
-    <GlassCard className="min-h-0 flex-1">
-      <CardTitle icon={TreePine}>Cut vs. planted</CardTitle>
+    <GlassCard className="px-3 py-2.5">
+      <div className="flex items-start justify-between gap-2">
+        <CardTitle icon={TreePine}>Cut vs. planted</CardTitle>
+        {treesCut > 0 && (
+          <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+            <ArrowRight className="size-3 text-emerald-600" aria-hidden />
+            plant <b className="text-foreground">{n(ratio)}</b> per 1 cut
+          </span>
+        )}
+      </div>
 
       {treesCut === 0 ? (
-        <p className="m-auto text-sm text-muted-foreground">
+        <p className="py-2 text-center text-sm text-muted-foreground">
           Nothing is being cut, so nothing needs replacing.
         </p>
       ) : (
         // key replays the entrance animation whenever the numbers change
         <div
           key={`${treesCut}-${saplingsPlanted}`}
-          className="m-auto flex w-full flex-col items-stretch gap-2"
+          className="grid grid-cols-2 gap-2"
         >
-          {/* 1. what you cut */}
-          <div className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both flex items-center gap-3 rounded-2xl bg-orange-100/80 p-3">
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white/80">
-              <Axe className="size-6 text-orange-500" aria-hidden />
+          <div className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both clay-sm clay-tint-orange flex items-center gap-2 p-2">
+            <span className="clay-inset grid size-9 shrink-0 place-items-center rounded-full!">
+              <Axe className="size-5 text-orange-500" aria-hidden />
             </span>
-            <div>
-              <div className="text-xs text-muted-foreground">You cut down</div>
-              <div className="text-2xl leading-tight font-bold text-orange-600">
-                {n(treesCut)}{" "}
-                <span className="text-base font-semibold">
+            <div className="min-w-0">
+              <div className="text-[11px] text-muted-foreground">You cut</div>
+              <div className="text-xl leading-tight font-extrabold text-orange-600">
+                {n(treesCut)}
+                <span className="ml-1 text-xs font-semibold">
                   {treesCut === 1 ? "tree" : "trees"}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* the rule that connects them */}
           <div
-            className="animate-in fade-in fill-mode-both flex items-center justify-center gap-2 text-xs text-muted-foreground"
-            style={{ animationDelay: "150ms" }}
+            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both clay-sm clay-tint-green flex items-center gap-2 p-2"
+            style={{ animationDelay: "200ms" }}
           >
-            <ArrowDown className="size-4 text-emerald-700" aria-hidden />
-            <span>
-              plant <b className="text-foreground">{n(ratio)}</b> for every 1
-              cut
+            <span className="clay-inset grid size-9 shrink-0 place-items-center rounded-full!">
+              <Sprout className="size-5 text-emerald-600" aria-hidden />
             </span>
-          </div>
-
-          {/* 2. what you plant */}
-          <div
-            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both flex items-center gap-3 rounded-2xl bg-emerald-100/80 p-3"
-            style={{ animationDelay: "300ms" }}
-          >
-            <span className="grid size-11 shrink-0 place-items-center rounded-full bg-white/80">
-              <Sprout className="size-6 text-emerald-600" aria-hidden />
-            </span>
-            <div>
-              <div className="text-xs text-muted-foreground">
-                You plant
-              </div>
-              <div className="text-2xl leading-tight font-bold text-emerald-700">
-                {n(saplingsPlanted)}{" "}
-                <span className="text-base font-semibold">new trees</span>
+            <div className="min-w-0">
+              <div className="text-[11px] text-muted-foreground">You plant</div>
+              <div className="text-xl leading-tight font-extrabold text-emerald-700">
+                {n(saplingsPlanted)}
+                <span className="ml-1 text-xs font-semibold">trees</span>
               </div>
             </div>
           </div>
-
-          <p className="mt-1 flex items-center justify-center gap-1 text-[11px] text-muted-foreground">
-            <Info className="size-3" aria-hidden />
-            Rule: DENR Memorandum Order 2012-02
-          </p>
         </div>
       )}
+      <p className="mt-1.5 flex items-center justify-center gap-1 text-[10.5px] text-muted-foreground">
+        <Info className="size-3" aria-hidden />
+        Rule: DENR Memorandum Order 2012-02
+      </p>
     </GlassCard>
   )
 }

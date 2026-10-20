@@ -77,7 +77,7 @@ export default function SimulationPage() {
           }}
         />
       ) : (
-        <Skeleton className="m-3 flex-1 rounded-2xl" />
+        <Skeleton className="m-3 flex-1 rounded-[1.75rem]" />
       )}
     </div>
   )

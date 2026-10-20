@@ -12,19 +12,19 @@ const BADGE: Record<
     icon: CircleCheck,
     badge: "bg-emerald-100 text-emerald-600",
     text: "text-emerald-700",
-    ring: "ring-emerald-400",
+    ring: "ring-emerald-400/60",
   },
   careful: {
     icon: TriangleAlert,
     badge: "bg-amber-100 text-amber-600",
     text: "text-amber-600",
-    ring: "ring-amber-400",
+    ring: "ring-amber-400/60",
   },
   danger: {
     icon: Waves,
     badge: "bg-red-100 text-red-500",
     text: "text-red-600",
-    ring: "ring-red-400",
+    ring: "ring-red-400/60",
   },
 }
 
@@ -57,11 +57,11 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
               key={m.month}
               title={`Month ${m.month}: ${rainWord(m.rainPct)} rain, ${STATUS_COPY[m.status].label}`}
               className={cn(
-                "flex min-w-0 flex-col items-center gap-1.5 rounded-xl bg-white/50 py-2 transition-all duration-300",
+                "clay-sm flex min-w-0 flex-col items-center gap-1.5 py-2 transition-all duration-300",
                 i > activeIndex && "opacity-30",
                 playing &&
                   i === activeIndex &&
-                  cn("-translate-y-0.5 bg-white/90 shadow-md ring-2", b.ring)
+                  cn("-translate-y-1 scale-105 ring-4 ring-offset-0", b.ring)
               )}
             >
               <span className="text-[11px] text-muted-foreground">
@@ -69,7 +69,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
               </span>
               <span
                 className={cn(
-                  "grid size-8 place-items-center rounded-full",
+                  "grid size-8 place-items-center rounded-full shadow-[inset_2px_2px_4px_rgba(255,255,255,0.8),inset_-2px_-2px_4px_rgba(0,0,0,0.08),2px_3px_5px_rgba(88,128,98,0.25)]",
                   b.badge
                 )}
               >
@@ -85,7 +85,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
       </div>
 
       {/* The details, said once, in words, for the month being shown. */}
-      <div className="flex items-center gap-2 rounded-xl bg-white/50 px-3 py-2 text-sm">
+      <div className="clay-inset flex items-center gap-2 px-4 py-2.5 text-sm">
         <ActiveIcon
           className={cn("size-4 shrink-0", BADGE[active.status].text)}
           aria-hidden
