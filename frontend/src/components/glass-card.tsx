@@ -8,7 +8,7 @@ export function GlassCard({
   return (
     <Card
       className={cn(
-        "gap-0 rounded-2xl border-white/70 bg-white/40 p-3.5 shadow-lg backdrop-blur-xl backdrop-saturate-150",
+        "gap-0 p-4",
         className
       )}
       {...props}
@@ -25,7 +25,7 @@ export function CardTitle({
 }) {
   return (
     <p className="mb-2 flex items-center gap-1.5 text-[13px] font-semibold text-muted-foreground">
-      <Icon className="size-4 text-emerald-700" aria-hidden /> {children}
+      <Icon className="size-4 text-emerald-600 drop-shadow-[1px_2px_1px_rgba(30,110,70,0.25)]" aria-hidden /> {children}
     </p>
   )
 }

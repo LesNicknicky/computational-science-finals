@@ -119,7 +119,7 @@ function MethodCard({ s }: { s: MethodSection }) {
         </div>
 
         <Collapsible open={open} onOpenChange={setOpen}>
-          <CollapsibleTrigger className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+          <CollapsibleTrigger className="clay-sm clay-press flex items-center gap-1 rounded-full! px-4 py-1.5 text-sm font-bold text-emerald-700">
             Show the math
             <ChevronDown
               className={`h-4 w-4 transition-transform ${
@@ -129,7 +129,7 @@ function MethodCard({ s }: { s: MethodSection }) {
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-3 space-y-3">
             <p className="text-sm">{s.summary}</p>
-            <pre className="overflow-x-auto rounded-md bg-muted p-3 text-sm">
+            <pre className="clay-inset overflow-x-auto rounded-2xl! p-4 text-sm">
               {s.formula}
             </pre>
             {s.assumptions.length > 0 && (
@@ -148,9 +148,10 @@ function MethodCard({ s }: { s: MethodSection }) {
 
 export default function MethodologyPage() {
   return (
-    <div className="mx-auto w-full max-w-7xl p-4">
+    <div className="app-bg mx-auto min-h-svh w-full max-w-none p-4 md:p-6">
+      <div className="mx-auto w-full max-w-7xl">
       <div className="mb-4">
-        <h2 className="text-xl font-semibold">Methodology</h2>
+        <h2 className="text-xl font-extrabold text-emerald-900">Methodology</h2>
         <p className="text-sm text-muted-foreground">
           How each number in the simulator is calculated
         </p>
@@ -159,7 +160,7 @@ export default function MethodologyPage() {
       <div className="grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)] xl:items-start">
         <nav className="xl:sticky xl:top-4">
           <p className="mb-2 text-sm font-medium">On this page</p>
-          <ul className="space-y-1 border-l pl-3 text-sm">
+          <ul className="clay-sm space-y-1 p-4 text-sm">
             {SECTIONS.map((s) => (
               <li key={s.id}>
                 <a
@@ -178,6 +179,7 @@ export default function MethodologyPage() {
             <MethodCard key={s.id} s={s} />
           ))}
         </div>
+      </div>
       </div>
     </div>
   )

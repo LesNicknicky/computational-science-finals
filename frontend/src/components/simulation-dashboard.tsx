@@ -33,17 +33,19 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
     <div className="app-bg relative flex min-w-0 flex-1 flex-col gap-3 overflow-auto p-3 lg:h-svh lg:overflow-hidden">
       <div
         className="blob -top-16 left-64 size-110 opacity-70"
-        style={{ background: "radial-gradient(#6fd3a0, transparent 70%)" }}
+        style={{ background: "radial-gradient(oklch(0.86 0.09 152 / 0.75), transparent 70%)" }}
       />
       <div
         className="blob right-32 -bottom-20 size-115 opacity-80"
         style={{
-          background: "radial-gradient(#c5d68a, transparent 70%)",
+          background: "radial-gradient(oklch(0.9 0.09 110 / 0.8), transparent 70%)",
           animationDirection: "reverse",
         }}
       />
-      <header className="relative flex h-9 items-center justify-between">
-        <h1 className="text-[19px] font-bold">Deforestation Offset Simulator</h1>
+      <header className="relative flex h-11 items-center justify-between">
+        <h1 className="clay-sm rounded-full! px-5 py-1.5 text-[19px] font-extrabold text-emerald-900">
+          Deforestation Offset Simulator
+        </h1>
       </header>
 
       <div className="relative grid min-h-0 flex-1 gap-3 lg:grid-cols-[330px_minmax(0,1fr)_290px]">
@@ -84,7 +86,7 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
               </span>
               <Button
                 onClick={toggle}
-                className="rounded-full bg-emerald-600 hover:bg-emerald-700"
+                size="lg"
               >
                 {playing ? <Square /> : <Play />}{" "}
                 {playing ? "Stop" : "Play the year"}
@@ -93,7 +95,7 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
                 <Button
                   variant="outline"
                   onClick={onExport}
-                  className="rounded-full bg-white/60"
+                  size="lg"
                 >
                   <Download /> Export PDF
                 </Button>

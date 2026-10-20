@@ -18,21 +18,21 @@ export function RegionMap({ value, onChange, className }: Props) {
     // push the card taller than the space the layout gives it: it just scales
     // down to fit. min-h-72 is only a fallback for phones, where the card has
     // no fixed height.
-    <div className={cn("relative flex-1", className, "min-h-72 lg:min-h-0")}>
+    <div className={cn("clay-inset relative flex-1", className, "min-h-72 lg:min-h-0")}>
       <svg
         viewBox={MAP_VIEWBOX}
-        className="absolute inset-0 size-full"
+        className="absolute inset-3 size-[calc(100%-1.5rem)]"
         role="group"
         aria-label="Pick a region"
       >
         <path
           d={OTHER_REGIONS_PATH}
-          className="fill-stone-300/80 stroke-white"
+          className="fill-stone-300/70 stroke-white/80"
           strokeWidth={0.5}
           strokeLinejoin="round"
           aria-hidden
         />
-        <g className="drop-shadow-[0_1px_2px_rgba(6,78,59,0.35)]">
+        <g className="drop-shadow-[2px_3px_2px_rgba(6,78,59,0.35)]">
           {ordered.map((r) => (
             <path
               key={r.id}
@@ -51,8 +51,8 @@ export function RegionMap({ value, onChange, className }: Props) {
               className={cn(
                 "cursor-pointer stroke-white outline-none transition-colors focus-visible:stroke-emerald-900",
                 r.id === value
-                  ? "fill-emerald-600"
-                  : "fill-emerald-300 hover:fill-emerald-400"
+                  ? "fill-emerald-500"
+                  : "fill-emerald-200 hover:fill-emerald-300"
               )}
               strokeWidth={r.id === value ? 1.2 : 0.8}
               strokeLinejoin="round"

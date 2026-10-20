@@ -578,7 +578,7 @@ function Refs({ ids }: { ids?: string[] }) {
           <a
             key={id}
             href={`#ref-${id}`}
-            className="rounded-md bg-emerald-700/10 px-1.5 py-0.5 text-xs font-medium text-emerald-800 hover:bg-emerald-700/20"
+            className="clay-sm clay-press rounded-full! px-2 py-0.5 text-xs font-bold text-emerald-800"
           >
             [{n}]
           </a>
@@ -625,7 +625,7 @@ function SectionTitle({
   return (
     <div className="mb-4">
       <h3 className="flex items-center gap-2 text-base font-semibold">
-        <span className="grid size-8 place-items-center rounded-lg bg-emerald-700 text-white">
+        <span className="clay-green grid size-9 place-items-center rounded-2xl">
           <Icon className="size-4" aria-hidden />
         </span>
         {title}
@@ -699,7 +699,7 @@ export default function ResearchPage() {
               are our numbers?
             </p>
             <div
-              className="flex h-3 overflow-hidden rounded-full bg-white/60"
+              className="flex h-4 overflow-hidden clay-track"
               role="img"
               aria-label={counts
                 .map((c) => `${c.n} ${KIND[c.kind].label}`)
@@ -724,7 +724,7 @@ export default function ResearchPage() {
                       .getElementById("constants")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }}
-                  className="rounded-lg p-1.5 text-left hover:bg-white/60"
+                  className="clay-sm clay-press p-2.5 text-left"
                 >
                   <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <span
@@ -778,7 +778,7 @@ export default function ResearchPage() {
                 {SOURCES.map((s) => (
                   <div
                     key={s.name}
-                    className="space-y-3 rounded-xl border border-white/70 bg-white/50 p-4"
+                    className="space-y-3 clay-sm p-4"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <p className="flex items-center gap-2 font-medium">
@@ -803,7 +803,7 @@ export default function ResearchPage() {
                       <p className="text-sm">{s.usedFor}</p>
                     </div>
                     {s.goodToKnow && (
-                      <p className="flex items-start gap-1.5 rounded-lg bg-amber-100/70 px-2.5 py-1.5 text-xs text-amber-900">
+                      <p className="flex items-start gap-1.5 clay-sm clay-tint-amber px-3 py-2 text-xs text-amber-900">
                         <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden />
                         {s.goodToKnow}
                       </p>
@@ -846,9 +846,9 @@ export default function ResearchPage() {
                           {share.toFixed(1)}%
                         </span>
                       </div>
-                      <div className="h-2.5 overflow-hidden rounded-full bg-white/60">
+                      <div className="h-3 overflow-hidden clay-track">
                         <div
-                          className="h-full rounded-full bg-linear-to-r from-emerald-500 to-emerald-700"
+                          className="h-full rounded-full bg-linear-to-r from-emerald-400 to-emerald-600 shadow-[inset_1px_2px_3px_rgba(255,255,255,0.5)]"
                           style={{ width: `${Math.max(share, 1.5)}%` }}
                         />
                       </div>
@@ -883,7 +883,7 @@ export default function ResearchPage() {
                   return (
                     <div
                       key={s.region}
-                      className="rounded-xl border border-white/70 bg-white/50 p-4"
+                      className="clay-sm p-4"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div>
@@ -914,14 +914,14 @@ export default function ResearchPage() {
                               title={`${v} mm`}
                             >
                               <div
-                                className="rounded-sm bg-emerald-600/80"
+                                className="rounded-md bg-emerald-500/80 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.5)]"
                                 style={{ height: `${(v / max) * 100}%` }}
                               />
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <div className="mt-3 grid h-16 place-items-center rounded-lg border border-dashed border-stone-300 text-xs text-muted-foreground">
+                        <div className="mt-3 grid h-16 place-items-center rounded-lg clay-inset border-0 text-xs text-muted-foreground">
                           No chart yet
                         </div>
                       )}
@@ -1008,7 +1008,7 @@ export default function ResearchPage() {
                     return [
                       <TableRow
                         key={g.title}
-                        className="bg-emerald-700/10 hover:bg-emerald-700/10"
+                        className="bg-emerald-600/10 hover:bg-emerald-600/10"
                       >
                         <TableCell
                           colSpan={4}
@@ -1061,7 +1061,7 @@ export default function ResearchPage() {
                 {GROUND.map((g) => (
                   <div
                     key={g.name}
-                    className="grid gap-x-4 gap-y-2 rounded-xl border border-white/70 bg-white/50 p-4 md:grid-cols-[150px_minmax(0,1fr)_minmax(0,1fr)]"
+                    className="grid gap-x-4 gap-y-2 clay-sm p-4 md:grid-cols-[150px_minmax(0,1fr)_minmax(0,1fr)]"
                   >
                     <div>
                       <p className="font-medium">{g.name}</p>
@@ -1073,9 +1073,9 @@ export default function ResearchPage() {
                         Runoff number
                       </p>
                       <div className="mt-1 flex items-center gap-2">
-                        <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/70">
+                        <div className="h-3 flex-1 overflow-hidden clay-track">
                           <div
-                            className="h-full rounded-full bg-linear-to-r from-emerald-400 to-emerald-800"
+                            className="h-full rounded-full bg-linear-to-r from-emerald-300 to-emerald-600 shadow-[inset_1px_2px_3px_rgba(255,255,255,0.5)]"
                             style={{ width: `${g.cn}%` }}
                           />
                         </div>
@@ -1120,7 +1120,7 @@ export default function ResearchPage() {
                 {LIMITS.map((l) => (
                   <li
                     key={l}
-                    className="flex items-start gap-2 rounded-xl border border-white/70 bg-white/50 p-3 text-sm"
+                    className="flex items-start gap-2 clay-sm p-3 text-sm"
                   >
                     <TriangleAlert
                       className="mt-0.5 size-4 shrink-0 text-amber-600"

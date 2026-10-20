@@ -62,7 +62,7 @@ function FriendlyTooltip({
   const p = payload?.[0]?.payload
   if (!active || !p || p.rain === null || p.soak === null) return null
   return (
-    <div className="rounded-xl border border-white/70 bg-white/90 px-3 py-2 text-xs shadow-lg backdrop-blur">
+    <div className="clay-sm px-3.5 py-2.5 text-xs">
       <div className="mb-1 font-semibold">Month {p.month}</div>
       <div className="flex items-center gap-1.5">
         <span className="size-2 rounded-full bg-[#5b9fc4]" />
@@ -125,7 +125,7 @@ export function PredictionAreaChart({
         >
           <SelectTrigger
             size="sm"
-            className="w-32.5 shrink-0 bg-white/60"
+            className="w-36 shrink-0"
             aria-label="Time range"
           >
             <SelectValue />
@@ -140,7 +140,7 @@ export function PredictionAreaChart({
         </Select>
       </div>
 
-      <ChartContainer config={config} className="min-h-0 w-full flex-1">
+      <ChartContainer config={config} className="clay-inset min-h-0 w-full flex-1 p-2 pt-3">
         <AreaChart data={view} margin={{ left: 0, right: 12, top: 14 }}>
           <defs>
             <linearGradient id="rainFill" x1="0" y1="0" x2="0" y2="1">

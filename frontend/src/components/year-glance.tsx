@@ -15,9 +15,9 @@ export function YearGlance({ months }: { months: MonthResult[] }) {
   return (
     <GlassCard className="min-h-0 flex-1 flex-col items-center justify-center">
       <p className="mb-1 self-start text-[13px] font-semibold text-muted-foreground">The year at a glance</p>
-      <ChartContainer config={config} className="aspect-square max-h-35 w-full">
+      <ChartContainer config={config} className="aspect-square max-h-35 w-full drop-shadow-[3px_4px_3px_rgba(6,78,59,0.25)]">
         <PieChart>
-          <Pie data={data} dataKey="count" nameKey="status" innerRadius="62%" strokeWidth={2}>
+          <Pie data={data} dataKey="count" nameKey="status" innerRadius="62%" strokeWidth={3} cornerRadius={6} paddingAngle={2}>
             <Label
               content={({ viewBox }) =>
                 viewBox && "cx" in viewBox ? (

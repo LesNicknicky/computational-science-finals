@@ -25,6 +25,9 @@ CUTTING_CYCLE_YEARS = 35
 BIOMASS_REMOVED_PER_CYCLE = 0.50
 BIOMASS_RECOVERED_BEFORE_NEXT_CUT = 0.70
 
+# Large trees per hectare (Quimio 2016, Table 2); used to derive the area from the tree count
+TREE_DENSITY_PER_HA = 44
+
 STATUS_ELEVATED = 0.5
 STATUS_WARNING = 1.0
 
@@ -35,7 +38,6 @@ RATE_OF_RISE_LIMIT = 50.0  # Eq 16 (mm/day), project-defined
 
 # --- Still unset ---
 ALLOWABLE_CUT = None       # decide per cycle vs per year first
-TREE_DENSITY_PER_HA = 877
 
 
 class ConstantNotSet(ValueError):
@@ -50,20 +52,18 @@ def require(name: str, value):
 
 
 SOURCES = {
-    "LAMBDA": "USDA NRCS (2004), NEH-630 Ch. 10",     # progress doc says TR-55; pick one
+    "LAMBDA": "USDA-SCS (1986), TR-55 [verify page]",
     "CN_IMPERVIOUS": "USDA-SCS (1986), TR-55 Table 2-2",
-    "REPLACEMENT_RATIO": "DENR DMO 2012-02",
+    "REPLACEMENT_RATIO": "DENR DMO 2012-02 (only the 1:100 natural ratio is used; 1:50 and plantation are out of scope)",
     "CUTTING_CYCLE_YEARS": "Lasco et al. (2006)",
-    "BIOMASS_REMOVED_PER_CYCLE": "Lasco et al. (2006)",
-    "BIOMASS_RECOVERED_BEFORE_NEXT_CUT": "Lasco et al. (2006)",
+    "BIOMASS_REMOVED_PER_CYCLE": "Lasco et al. (2006) [verify: 0.50 not found in the excerpts checked]",
+    "BIOMASS_RECOVERED_BEFORE_NEXT_CUT": "Lasco et al. (2006): about 70% of original biomass recovered before the next harvest",
     "STATUS_ELEVATED": "Project-defined (proposal 5.4)",
     "STATUS_WARNING": "Project-defined (proposal 5.4)",
-    # CHANGED: note now reflects the alpha decision
     "RAIN_ALPHA": "PROVISIONAL project-defined default of 1.0 (exponential daily rain); sensitivity range 0.43-1.01 from Bermudez et al. (2017), Table 1",
     "T0": "PROVISIONAL placeholder: calibrate by sensitivity analysis",
     "RATE_OF_RISE_LIMIT": "PROVISIONAL placeholder: project-defined",
     "ALLOWABLE_CUT": "Project-defined, unset: per cycle vs per year undecided",
-    "TREE_DENSITY_PER_HA": "Quimio (2016), Annals of Tropical Research 38(2):30-51, Samar Island Natural Park; single site, applied to all regions (limitation)",
-    # CHANGED: new entry for full pavement drainage
+    "TREE_DENSITY_PER_HA": "Quimio (2016), Annals of Tropical Research 38(2):30-51, Table 2, large trees per hectare, Samar Island Natural Park; single site, applied to all regions (limitation)",
     "FULL_PAVEMENT_DRAINAGE": "PROVISIONAL, borrowed: 5 mm/h x 24 = 120 mm/day from international urban flood-modeling studies; primary sources to be confirmed; test 5-50 mm/h (see surface_coefficient.json)",
 }
