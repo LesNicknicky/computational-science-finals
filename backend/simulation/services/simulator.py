@@ -20,7 +20,6 @@ def run_year(*, n_trees, cut_fraction, ratio_r, cn, drainage_mm_day, area_m2, a_
     for m, days in enumerate(DAYS_IN_MONTH):
         p_wet, alpha, mean_wet = rain[m]
         rain_mm = daily_rainfall(days, p_wet, alpha, mean_wet, rng)
-        rain_mm = daily_rainfall(days, p_wet, alpha, mean_wet, rng)
 
         v = daily_absorption_m3(n_trees=n_trees, n_cut=n_cut, n_saplings=n_sap, a_m=a_m,
                                 sigma=sigma, tau_years=tau0 + m / 12, k=k, p=p)
