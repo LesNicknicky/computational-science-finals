@@ -1,17 +1,17 @@
-import { Rocket, Sprout } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Rocket, Sprout } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface NavbarProps {
-  onLaunch: () => void;
+  onLaunch: () => void
 }
 
 const links = [
   { href: "#purpose", label: "Purpose" },
   { href: "#problem", label: "Problem & Solution" },
   { href: "#news", label: "Hazards & News" },
-];
+]
 
 export function Navbar({ onLaunch }: NavbarProps) {
   return (
@@ -22,7 +22,9 @@ export function Navbar({ onLaunch }: NavbarProps) {
             <Sprout className="size-6" />
           </span>
           <span className="leading-tight">
-            <span className="block font-display text-2xl font-bold text-[#12291d]">BINHI</span>
+            <span className="font-display block text-2xl font-bold text-[#12291d]">
+              BINHI
+            </span>
             <span className="block text-[11px] font-semibold tracking-widest text-[#5f6b2f]">
               REFORESTATION OFFSET SIMULATOR
             </span>
@@ -34,7 +36,10 @@ export function Navbar({ onLaunch }: NavbarProps) {
             <a
               key={l.href}
               href={l.href}
-              className={cn(buttonVariants({ variant: "ghost" }), "rounded-xl px-5 font-semibold text-[#12291d] hover:bg-white/60")}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "rounded-xl px-5 font-semibold text-[#12291d] hover:bg-white/60"
+              )}
             >
               {l.label}
             </a>
@@ -42,16 +47,22 @@ export function Navbar({ onLaunch }: NavbarProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="hidden gap-2 rounded-xl bg-[#e3e8d3] px-4 py-2 text-xs font-semibold text-[#12291d] hover:bg-[#e3e8d3] lg:flex">
+          <Badge
+            variant="secondary"
+            className="hidden gap-2 rounded-xl bg-[#e3e8d3] px-4 py-2 text-xs font-semibold text-[#12291d] hover:bg-[#e3e8d3] lg:flex"
+          >
             <span className="size-2 rounded-full bg-emerald-600" />
             DENR MO 2012-02 Standard
           </Badge>
-          <Button onClick={onLaunch} className="gap-2 bg-emerald-700 font-bold text-white shadow-md hover:bg-emerald-800">
+          <Button
+            onClick={onLaunch}
+            className="gap-2 bg-emerald-700 font-bold text-white shadow-md hover:bg-emerald-800"
+          >
             <Rocket className="size-4" />
             Launch Simulator
           </Button>
         </div>
       </div>
     </header>
-  );
+  )
 }

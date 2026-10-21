@@ -45,7 +45,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
   const ActiveIcon = BADGE[active.status].icon
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-2">
       {/* One small tile per month: just a status badge and a rain icon. */}
       <div className="grid grid-cols-12 gap-1.5">
         {months.map((m, i) => {
@@ -57,7 +57,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
               key={m.month}
               title={`Month ${m.month}: ${rainWord(m.rainPct)} rain, ${STATUS_COPY[m.status].label}`}
               className={cn(
-                "clay-sm flex min-w-0 flex-col items-center gap-1.5 py-2 transition-all duration-300",
+                "clay-sm flex min-w-0 flex-col items-center gap-1 py-1.5 transition-all duration-300",
                 i > activeIndex && "opacity-30",
                 playing &&
                   i === activeIndex &&
@@ -73,7 +73,10 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
                   b.badge
                 )}
               >
-                <Icon className="size-4.5" aria-label={STATUS_COPY[m.status].label} />
+                <Icon
+                  className="size-4.5"
+                  aria-label={STATUS_COPY[m.status].label}
+                />
               </span>
               <Rain
                 className={cn("size-4", rainText(m.rainPct))}
@@ -85,7 +88,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
       </div>
 
       {/* The details, said once, in words, for the month being shown. */}
-      <div className="clay-inset flex items-center gap-2 px-4 py-2.5 text-sm">
+      <div className="clay-inset flex items-center gap-2 px-4 py-1.5 text-sm">
         <ActiveIcon
           className={cn("size-4 shrink-0", BADGE[active.status].text)}
           aria-hidden

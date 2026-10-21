@@ -32,10 +32,12 @@ function Tile({
   valueClass?: string
 }) {
   return (
-    <GlassCard className="px-3 py-2.5">
+    <GlassCard className="px-3 py-2">
       <CardTitle icon={icon}>{title}</CardTitle>
       <div className="-mt-1 flex flex-wrap items-baseline gap-x-1.5">
-        <span className={`text-xl leading-tight font-extrabold ${valueClass ?? ""}`}>
+        <span
+          className={`text-xl leading-tight font-extrabold ${valueClass ?? ""}`}
+        >
           {value}
         </span>
         <span className="text-[11px] text-muted-foreground">{sub}</span>
@@ -109,37 +111,33 @@ export function CutVsPlanted({ result }: { result: SimulationResult }) {
         // key replays the entrance animation whenever the numbers change
         <div
           key={`${treesCut}-${saplingsPlanted}`}
-          className="grid grid-cols-2 gap-2"
+          className="flex flex-col gap-2"
         >
-          <div className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both clay-sm clay-tint-orange flex items-center gap-2 p-2">
-            <span className="clay-inset grid size-9 shrink-0 place-items-center rounded-full!">
-              <Axe className="size-5 text-orange-500" aria-hidden />
+          <div className="clay-sm clay-tint-orange flex animate-in items-center gap-2.5 px-2.5 py-1.5 fill-mode-both fade-in slide-in-from-bottom-2">
+            <span className="clay-inset grid size-8 shrink-0 place-items-center rounded-full!">
+              <Axe className="size-4.5 text-orange-500" aria-hidden />
             </span>
-            <div className="min-w-0">
-              <div className="text-[11px] text-muted-foreground">You cut</div>
-              <div className="text-xl leading-tight font-extrabold text-orange-600">
-                {n(treesCut)}
-                <span className="ml-1 text-xs font-semibold">
-                  {treesCut === 1 ? "tree" : "trees"}
-                </span>
-              </div>
-            </div>
+            <span className="text-xs text-muted-foreground">You cut</span>
+            <span className="ml-auto text-lg leading-tight font-extrabold whitespace-nowrap text-orange-600">
+              {n(treesCut)}
+              <span className="ml-1 text-xs font-semibold">
+                {treesCut === 1 ? "tree" : "trees"}
+              </span>
+            </span>
           </div>
 
           <div
-            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both clay-sm clay-tint-green flex items-center gap-2 p-2"
+            className="clay-sm clay-tint-green flex animate-in items-center gap-2.5 px-2.5 py-1.5 fill-mode-both fade-in slide-in-from-bottom-2"
             style={{ animationDelay: "200ms" }}
           >
-            <span className="clay-inset grid size-9 shrink-0 place-items-center rounded-full!">
-              <Sprout className="size-5 text-emerald-600" aria-hidden />
+            <span className="clay-inset grid size-8 shrink-0 place-items-center rounded-full!">
+              <Sprout className="size-4.5 text-emerald-600" aria-hidden />
             </span>
-            <div className="min-w-0">
-              <div className="text-[11px] text-muted-foreground">You plant</div>
-              <div className="text-xl leading-tight font-extrabold text-emerald-700">
-                {n(saplingsPlanted)}
-                <span className="ml-1 text-xs font-semibold">trees</span>
-              </div>
-            </div>
+            <span className="text-xs text-muted-foreground">You plant</span>
+            <span className="ml-auto text-lg leading-tight font-extrabold whitespace-nowrap text-emerald-700">
+              {n(saplingsPlanted)}
+              <span className="ml-1 text-xs font-semibold">trees</span>
+            </span>
           </div>
         </div>
       )}

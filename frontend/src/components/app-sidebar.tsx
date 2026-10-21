@@ -1,4 +1,4 @@
-import { BookOpen, Database, Info, LayoutDashboard } from "lucide-react"
+import { BookOpen, Database, LayoutDashboard, Users } from "lucide-react"
 import { NavLink, useLocation } from "react-router-dom"
 import { BinhiLogo } from "@/components/binhi-logo"
 import {
@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/sidebar"
 
 const NAV = [
-  { title: "Simulate", href: "/", icon: LayoutDashboard },
+  { title: "Simulate", href: "/simulation", icon: LayoutDashboard },
   { title: "How it works", href: "/methodology", icon: BookOpen },
   { title: "Sources", href: "/research", icon: Database },
-  { title: "About", href: "/about", icon: Info },
+  { title: "About", href: "/about", icon: Users },
 ]
 
 export function AppSidebar() {
@@ -38,7 +38,9 @@ export function AppSidebar() {
                 className="clay-press h-auto flex-col items-center justify-center gap-1 rounded-2xl bg-white/10 px-1 py-2.5 text-[10px] leading-tight font-semibold text-emerald-50 shadow-[3px_4px_8px_rgba(0,60,30,0.3),-2px_-2px_6px_rgba(255,255,255,0.18)] hover:bg-white/20 hover:text-white data-active:bg-emerald-800/30 data-active:text-white data-active:shadow-[inset_3px_3px_7px_rgba(0,60,30,0.45),inset_-2px_-2px_6px_rgba(255,255,255,0.25)]"
               >
                 <n.icon className="size-5!" />
-                <span className="text-center whitespace-normal!">{n.title}</span>
+                <span className="text-center whitespace-normal!">
+                  {n.title}
+                </span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

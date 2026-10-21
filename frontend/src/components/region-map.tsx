@@ -18,7 +18,7 @@ export function RegionMap({ value, onChange, className }: Props) {
     // push the card taller than the space the layout gives it: it just scales
     // down to fit. min-h-72 is only a fallback for phones, where the card has
     // no fixed height.
-    <div className={cn("clay-inset relative flex-1", className, "min-h-72 lg:min-h-0")}>
+    <div className={cn("clay-inset relative min-h-0 flex-1", className)}>
       <svg
         viewBox={MAP_VIEWBOX}
         className="absolute inset-3 size-[calc(100%-1.5rem)]"
@@ -49,7 +49,7 @@ export function RegionMap({ value, onChange, className }: Props) {
                 }
               }}
               className={cn(
-                "cursor-pointer stroke-white outline-none transition-colors focus-visible:stroke-emerald-900",
+                "cursor-pointer stroke-white transition-colors outline-none focus-visible:stroke-emerald-900",
                 r.id === value
                   ? "fill-emerald-500"
                   : "fill-emerald-200 hover:fill-emerald-300"

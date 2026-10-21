@@ -2,7 +2,7 @@ import { useState } from "react"
 import { BookOpen } from "lucide-react"
 import { useLocation } from "react-router-dom"
 import { BinhiLogo } from "@/components/binhi-logo"
-import { GuideContent } from "@/components/guide-content"
+import GuideContent from "@/pages/guide-page"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -64,7 +64,10 @@ export function AppHeader({ children }: { children?: React.ReactNode }) {
           <p className="line-clamp-2 text-[12px] leading-snug font-bold text-emerald-950 italic">
             {PROJECT.title}
           </p>
-          <p className="line-clamp-1 text-[11px] text-muted-foreground" title={PROJECT.description}>
+          <p
+            className="line-clamp-1 text-[11px] text-muted-foreground"
+            title={PROJECT.description}
+          >
             {PROJECT.description}
           </p>
         </div>
@@ -85,7 +88,8 @@ export function AppHeader({ children }: { children?: React.ReactNode }) {
                   What is BINHI simulating?
                 </SheetTitle>
                 <SheetDescription>
-                  A quick guide to the idea, the goals, and how to read the results.
+                  A quick guide to the idea, the goals, and how to read the
+                  results.
                 </SheetDescription>
               </SheetHeader>
               <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">

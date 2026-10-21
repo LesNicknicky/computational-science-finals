@@ -12,8 +12,14 @@ const STATUS_HEX = { safe: "#12a36e", careful: "#e0a020", danger: "#dc4b3c" }
 
 // Rain bars + soak-up line, drawn as plain SVG so the report needs no library.
 function chartSvg(result: SimulationResult) {
-  const W = 680, H = 200, L = 40, R = 40, T = 14, B = 28
-  const iw = W - L - R, ih = H - T - B
+  const W = 680,
+    H = 200,
+    L = 40,
+    R = 40,
+    T = 14,
+    B = 28
+  const iw = W - L - R,
+    ih = H - T - B
   const maxMm = Math.max(...result.months.map((m) => m.rainMm), 1)
   const bw = iw / 12
   const bars = result.months
@@ -35,11 +41,16 @@ function chartSvg(result: SimulationResult) {
   </svg>`
 }
 
-export function openReport(result: SimulationResult, scenario: Scenario): boolean {
+export function openReport(
+  result: SimulationResult,
+  scenario: Scenario
+): boolean {
   const info = interpret(result, scenario)
   const sev = SEVERITY[info.severity]
   const when = new Date().toLocaleDateString("en-PH", {
-    year: "numeric", month: "long", day: "numeric",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   })
 
   const rows = result.months

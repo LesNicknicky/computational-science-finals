@@ -1,4 +1,4 @@
-import { Sprout } from "lucide-react";
+import { Sprout } from "lucide-react"
 
 export function Footer() {
   return (
@@ -11,8 +11,8 @@ export function Footer() {
           <div>
             <p className="font-display text-2xl font-bold text-white">BINHI</p>
             <p className="max-w-xl text-sm">
-              Reforestation Offset Simulator: Modeling Sapling Requirements, Absorption Recovery, and
-              Relative Flood Risk
+              Reforestation Offset Simulator: Modeling Sapling Requirements,
+              Absorption Recovery, and Relative Flood Risk
             </p>
           </div>
         </div>
@@ -21,5 +21,5 @@ export function Footer() {
         </p>
       </div>
     </footer>
-  );
+  )
 }

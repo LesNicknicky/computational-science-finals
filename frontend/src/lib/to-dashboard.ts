@@ -13,10 +13,14 @@ export function toDashboardResult(res: SimulationResponse): SimulationResult {
   return {
     treesCut: res.treesToCut,
     saplingsPlanted: res.saplingsNeeded,
-    leadDays: res.leadTimeMonths == null ? null : Math.round(res.leadTimeMonths * 30),
-    months: res.months.map((m) => ({
+    leadDays:
+      res.leadTimeMonths == null ? null : Math.round(res.leadTimeMonths * 30),
+    months: res.months.map((m, i) => ({
       month: m.month,
       rainPct: (m.rainfallMm / maxRain) * 100,
+      rainMm: m.rainfallMm,
+      depthMm: m.cumulativeRunoff,
+      riskIndex: res.prediction[i]?.riskIndex ?? 0,
       soakPct: m.absorptionRecoveredPct, // already 0-100
       status: STATUS[m.risk],
     })),

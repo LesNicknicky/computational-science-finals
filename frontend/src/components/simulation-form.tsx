@@ -1,6 +1,13 @@
-import { MapPin, TreePine } from "lucide-react"
+import { Layers, MapPin, TreePine } from "lucide-react"
 import { CardTitle, GlassCard } from "@/components/glass-card"
 import { RegionMap } from "@/components/region-map"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { REGIONS as PRESETS } from "@/data/regions"
 import { REGIONS } from "@/data/region-map"
@@ -12,12 +19,16 @@ export interface SimulationFormProps {
   cutPercent: number
   onCutChange: (value: number) => void
   matureTrees: number
+  ground: string
+  onGroundChange: (value: string) => void
+  groundOptions: { value: string; label: string }[]
 }
 
-// Ground type lives in the sticky header (dropdown), so this card is map + slider only.
 export function SimulationForm(p: SimulationFormProps) {
   const region = REGIONS.find((r) => r.id === p.regionId) ?? REGIONS[0]
-  const station = PRESETS[region.id as RegionId]?.station
+  const station = (
+    PRESETS[region.id as RegionId] as { station?: string } | undefined
+  )?.station
   const cutTrees = Math.round((p.cutPercent / 100) * p.matureTrees)
 
   return (
@@ -26,10 +37,12 @@ export function SimulationForm(p: SimulationFormProps) {
       <RegionMap
         value={p.regionId}
         onChange={p.onRegionChange}
-        className="min-h-0 flex-1"
+        className="min-h-64 flex-1 lg:min-h-0"
       />
       <div className="clay-sm mt-2 px-3.5 py-2">
-        <div className="text-lg leading-tight font-extrabold">{region.name}</div>
+        <div className="text-lg leading-tight font-extrabold">
+          {region.name}
+        </div>
         <div className="text-xs text-muted-foreground">
           Rain data: {station ?? "PAGASA station"}
         </div>
@@ -39,10 +52,38 @@ export function SimulationForm(p: SimulationFormProps) {
         confirmed.
       </p>
 
+      <div className="mt-2 px-1">
+        <div className="mb-1.5 flex items-center gap-1.5 text-[13px] font-semibold text-muted-foreground">
+          <Layers className="size-4 text-emerald-600" aria-hidden /> Ground type
+        </div>
+        <Select
+          value={p.ground}
+          onValueChange={(v) => {
+            if (v) p.onGroundChange(v as string)
+          }}
+        >
+          <SelectTrigger className="w-full" aria-label="Ground type">
+            <SelectValue>
+              {(v: string) =>
+                p.groundOptions.find((o) => o.value === v)?.label ?? v
+              }
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {p.groundOptions.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="mt-2.5 px-1">
         <div className="mb-2.5 flex items-center justify-between text-[13px] font-semibold text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <TreePine className="size-4 text-emerald-600" aria-hidden /> Trees to cut
+            <TreePine className="size-4 text-emerald-600" aria-hidden /> Trees
+            to cut
           </span>
           <span className="clay-inset rounded-full! px-3 py-0.5 text-[14px] font-extrabold text-emerald-700">
             {p.cutPercent}% · {cutTrees} of {p.matureTrees}

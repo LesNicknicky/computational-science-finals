@@ -150,36 +150,38 @@ export default function MethodologyPage() {
   return (
     <div className="app-bg mx-auto min-h-svh w-full max-w-none p-4 md:p-6">
       <div className="mx-auto w-full max-w-7xl">
-      <div className="mb-4">
-        <h2 className="text-xl font-extrabold text-emerald-900">Methodology</h2>
-        <p className="text-sm text-muted-foreground">
-          How each number in the simulator is calculated
-        </p>
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)] xl:items-start">
-        <nav className="xl:sticky xl:top-4">
-          <p className="mb-2 text-sm font-medium">On this page</p>
-          <ul className="clay-sm space-y-1 p-4 text-sm">
-            {SECTIONS.map((s) => (
-              <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  {s.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="max-w-4xl space-y-4">
-          {SECTIONS.map((s) => (
-            <MethodCard key={s.id} s={s} />
-          ))}
+        <div className="mb-4">
+          <h2 className="text-xl font-extrabold text-emerald-900">
+            Methodology
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            How each number in the simulator is calculated
+          </p>
         </div>
-      </div>
+
+        <div className="grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)] xl:items-start">
+          <nav className="xl:sticky xl:top-4">
+            <p className="mb-2 text-sm font-medium">On this page</p>
+            <ul className="clay-sm space-y-1 p-4 text-sm">
+              {SECTIONS.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="max-w-4xl space-y-4">
+            {SECTIONS.map((s) => (
+              <MethodCard key={s.id} s={s} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

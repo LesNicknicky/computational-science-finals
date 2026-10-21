@@ -59,21 +59,22 @@ export function GuideContent({ twoColumn = false }: { twoColumn?: boolean }) {
 
       <Block icon={MapPin} title="What are we simulating?">
         <p>
-          A stand of mature trees is partly cut. The law asks for many new
-          trees to replace each one (100 saplings per tree, DENR Memorandum
-          Order 2012-02). But saplings are small: they soak up much less water
-          than the old trees, and only catch up as they grow.
+          A stand of mature trees is partly cut. The law asks for many new trees
+          to replace each one (100 saplings per tree, DENR Memorandum Order
+          2012-02). But saplings are small: they soak up much less water than
+          the old trees, and only catch up as they grow.
         </p>
         <p>
-          BINHI plays out <b>one year, month by month, from January to
-          December</b>. Each month it makes random daily rain (based on PAGASA
-          1991–2020 monthly normals for a station in the region), works out how
-          much runs off the ground, subtracts what the trees and saplings soak
-          up, and checks whether water would pile up faster than it drains.
+          BINHI plays out{" "}
+          <b>one year, month by month, from January to December</b>. Each month
+          it makes random daily rain (based on PAGASA 1991–2020 monthly normals
+          for a station in the region), works out how much runs off the ground,
+          subtracts what the trees and saplings soak up, and checks whether
+          water would pile up faster than it drains.
         </p>
         <p>
-          The result is a month-by-month answer to: <i>“Can the ground still
-          handle the rain after this cut?”</i>
+          The result is a month-by-month answer to:{" "}
+          <i>“Can the ground still handle the rain after this cut?”</i>
         </p>
       </Block>
 
@@ -102,15 +103,25 @@ export function GuideContent({ twoColumn = false }: { twoColumn?: boolean }) {
 
       <Block icon={ListChecks} title="How to use it">
         <ol className="list-decimal space-y-1 pl-5">
-          <li>Tap a <b>region</b> on the map.</li>
-          <li>Pick the <b>ground type</b> from the dropdown at the top.</li>
-          <li>Slide how many <b>trees to cut</b>.</li>
+          <li>
+            Tap a <b>region</b> on the map.
+          </li>
+          <li>
+            Pick the <b>ground type</b> from the dropdown at the top.
+          </li>
+          <li>
+            Slide how many <b>trees to cut</b>.
+          </li>
           <li>
             Press <b>Simulate</b>. The year plays month by month; pause or
             replay it any time.
           </li>
-          <li>Read the <b>interpretation</b> and severity on the right.</li>
-          <li>Press <b>Report</b> to save the results as a PDF.</li>
+          <li>
+            Read the <b>interpretation</b> and severity on the right.
+          </li>
+          <li>
+            Press <b>Report</b> to save the results as a PDF.
+          </li>
         </ol>
       </Block>
 
@@ -118,16 +129,26 @@ export function GuideContent({ twoColumn = false }: { twoColumn?: boolean }) {
         <p>Each month is marked:</p>
         <List
           items={[
-            <><b className="text-emerald-600">Safe</b>: the ground keeps up with the rain.</>,
-            <><b className="text-amber-500">Be careful</b>: the ground is close to its limit.</>,
-            <><b className="text-red-600">Danger</b>: flooding is likely.</>,
+            <>
+              <b className="text-emerald-600">Safe</b>: the ground keeps up with
+              the rain.
+            </>,
+            <>
+              <b className="text-amber-500">Be careful</b>: the ground is close
+              to its limit.
+            </>,
+            <>
+              <b className="text-red-600">Danger</b>: flooding is likely.
+            </>,
           ]}
         />
         <p>The whole year then gets a severity:</p>
         <div className="grid gap-1.5">
           {(Object.keys(SEVERITY) as Severity[]).map((k) => (
             <div key={k} className="flex items-start gap-2">
-              <span className={`mt-0.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${SEVERITY[k].badge}`}>
+              <span
+                className={`mt-0.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${SEVERITY[k].badge}`}
+              >
                 {SEVERITY[k].label}
               </span>
               <span>{SEVERITY[k].meaning}</span>
@@ -148,7 +169,8 @@ export function GuideContent({ twoColumn = false }: { twoColumn?: boolean }) {
       </Block>
 
       <p className="flex items-center justify-center gap-1.5 pb-1 text-xs text-muted-foreground">
-        <Play className="size-3" aria-hidden /> {PROJECT.name} · by {PROJECT.team}
+        <Play className="size-3" aria-hidden /> {PROJECT.name} · by{" "}
+        {PROJECT.team}
       </p>
     </div>
   )

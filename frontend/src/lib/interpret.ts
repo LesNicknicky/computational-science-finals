@@ -17,14 +17,16 @@ export const SEVERITY: Record<
   },
   moderate: {
     label: "Moderate",
-    meaning: "At least one month gets close to the ground's limit, but none reach danger.",
+    meaning:
+      "At least one month gets close to the ground's limit, but none reach danger.",
     badge: "bg-amber-100 text-amber-700",
     text: "text-amber-500",
     hex: "#e0a020",
   },
   high: {
     label: "High",
-    meaning: "One or two months reach danger, or the cut can't be offset by planting.",
+    meaning:
+      "One or two months reach danger, or the cut can't be offset by planting.",
     badge: "bg-orange-100 text-orange-700",
     text: "text-orange-600",
     hex: "#ea6a1f",
@@ -78,17 +80,25 @@ export interface Interpretation {
 
 const n = (v: number) => v.toLocaleString("en-US")
 
-export function interpret(result: SimulationResult, s: Scenario): Interpretation {
+export function interpret(
+  result: SimulationResult,
+  s: Scenario
+): Interpretation {
   const severity = severityOf(result)
-  const danger = result.months.filter((m) => m.status === "danger").map((m) => m.month)
-  const careful = result.months.filter((m) => m.status === "careful").map((m) => m.month)
+  const danger = result.months
+    .filter((m) => m.status === "danger")
+    .map((m) => m.month)
+  const careful = result.months
+    .filter((m) => m.status === "careful")
+    .map((m) => m.month)
   const wettest = result.months.reduce((a, b) => (b.rainMm > a.rainMm ? b : a))
   const first = result.months[0]
   const last = result.months[result.months.length - 1]
 
   let summary: string
   if (result.treesCut === 0) {
-    summary = "Nothing is being cut, so there is no loss of absorption to offset and the year stays safe."
+    summary =
+      "Nothing is being cut, so there is no loss of absorption to offset and the year stays safe."
   } else if (severity === "low") {
     summary = `Cutting ${n(result.treesCut)} of ${n(s.matureTrees)} trees on ${s.groundLabel.toLowerCase()} ground stays safe all year. The ground keeps up with the rain in every month.`
   } else if (severity === "moderate") {
@@ -96,7 +106,8 @@ export function interpret(result: SimulationResult, s: Scenario): Interpretation
   } else if (severity === "high" && danger.length > 0) {
     summary = `Flooding is likely in ${listMonths(danger)}. In ${danger.length === 1 ? "that month" : "those months"} the rain is more than the recovering ground can soak up.`
   } else if (severity === "high") {
-    summary = "Planting cannot match the loss from this cut, so the ground stays below its original absorption."
+    summary =
+      "Planting cannot match the loss from this cut, so the ground stays below its original absorption."
   } else {
     summary = `Flooding is likely in ${danger.length} of 12 months (${listMonths(danger)}). This cut is too large for the ground to recover from in time.`
   }
@@ -109,7 +120,9 @@ export function interpret(result: SimulationResult, s: Scenario): Interpretation
     `Soak-up recovers from ${Math.round(first.soakPct)}% in ${monthShort(first.month)} to ${Math.round(last.soakPct)}% in ${monthShort(last.month)} as the saplings grow.`
   )
   if (result.leadDays === null) {
-    points.push("This cut can't be fully offset by planting, no matter how early the saplings go in.")
+    points.push(
+      "This cut can't be fully offset by planting, no matter how early the saplings go in."
+    )
   } else if (result.treesCut > 0) {
     points.push(
       `To avoid a gap in protection, plant the ${n(result.saplingsPlanted)} saplings about ${Math.max(1, Math.round(result.leadDays / 30))} month(s) before cutting.`
@@ -119,9 +132,11 @@ export function interpret(result: SimulationResult, s: Scenario): Interpretation
 
   const advice: Record<Severity, string> = {
     low: "This cut looks manageable for this ground and rain pattern. Keep to the planting plan.",
-    moderate: "Consider planting earlier or cutting a little less, and plan extra care for the flagged months.",
+    moderate:
+      "Consider planting earlier or cutting a little less, and plan extra care for the flagged months.",
     high: "Lower the share of trees cut, or plant earlier, then run the simulation again until no month reaches danger.",
-    severe: "Not advisable as modeled. Cut much less, plant well ahead of the cut, and compare other ground types.",
+    severe:
+      "Not advisable as modeled. Cut much less, plant well ahead of the cut, and compare other ground types.",
   }
 
   return {
@@ -136,4 +151,4 @@ export function interpret(result: SimulationResult, s: Scenario): Interpretation
       "Severity is a relative score from the number of months in Be careful or Danger. Use it to compare scenarios. It is not a forecast of flood depth.",
     ],
   }
-}   
+}

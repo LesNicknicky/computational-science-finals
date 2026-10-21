@@ -47,11 +47,7 @@ export function SimulationControls(p: SimulationControlsProps) {
       </div>
 
       <Button onClick={p.onSimulate} disabled={p.simulating} size="lg">
-        {p.simulating ? (
-          <LoaderCircle className="animate-spin" />
-        ) : (
-          <Play />
-        )}
+        {p.simulating ? <LoaderCircle className="animate-spin" /> : <Play />}
         {p.simulating ? "Simulating…" : "Simulate"}
       </Button>
       <Button

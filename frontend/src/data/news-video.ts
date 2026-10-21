@@ -1,12 +1,12 @@
 export interface NewsVideo {
-  id: string;
+  id: string
 
-  youtubeId: string;
-  source: string;
-  label: string;
-  title: string;
-  duration: string;
-  accent: string;
+  youtubeId: string
+  source: string
+  label: string
+  title: string
+  duration: string
+  accent: string
 }
 
 export const newsVideos: NewsVideo[] = [
@@ -15,7 +15,8 @@ export const newsVideos: NewsVideo[] = [
     youtubeId: "6giJejuNhNY",
     source: "BBC News",
     label: "Sierra Madre Shield",
-    title: "Sierra Madre: Fighting to save what's left of a vital rainforest in the Philippines",
+    title:
+      "Sierra Madre: Fighting to save what's left of a vital rainforest in the Philippines",
     duration: "4:25",
     accent: "text-emerald-700",
   },
@@ -46,4 +47,4 @@ export const newsVideos: NewsVideo[] = [
     duration: "5:21",
     accent: "text-amber-600",
   },
-];
+]

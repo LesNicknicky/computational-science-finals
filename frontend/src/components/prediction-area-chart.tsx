@@ -25,8 +25,8 @@ import { rainWord } from "@/lib/copy"
 import type { MonthResult } from "@/types/dashboard"
 
 const config = {
-  rain: { label: "Rain", color: "#5b9fc4" },
-  soak: { label: "Ground soak-up", color: "#3aa882" },
+  rain: { label: "Rain", color: "#2f7fb0" },
+  soak: { label: "Ground soak-up", color: "#1f8f6b" },
 } satisfies ChartConfig
 
 const RANGES = [
@@ -40,7 +40,7 @@ const RANGES = [
 // Same cut-offs as rainWord() in lib/copy.ts, so the chart, the Rain tile and
 // the month cards all use the same words. Words sit on the left axis, centred
 // in each zone; the two faint lines mark where one zone turns into the next.
-const ZONE_TICKS = [17.5, 52.5, 85]
+const ZONE_TICKS = [17.5, 52.5, 90]
 const zoneWord = (v: number) =>
   v < 35 ? "Light rain" : v < 70 ? "Moderate" : "Heavy rain"
 
@@ -65,11 +65,11 @@ function FriendlyTooltip({
     <div className="clay-sm px-3.5 py-2.5 text-xs">
       <div className="mb-1 font-semibold">Month {p.month}</div>
       <div className="flex items-center gap-1.5">
-        <span className="size-2 rounded-full bg-[#5b9fc4]" />
+        <span className="size-2 rounded-full bg-[#2f7fb0]" />
         Rain: <b>{rainWord(p.rain)}</b>
       </div>
       <div className="flex items-center gap-1.5">
-        <span className="size-2 rounded-full bg-[#3aa882]" />
+        <span className="size-2 rounded-full bg-[#1f8f6b]" />
         Ground soaks up: <b>{Math.round(p.soak)}%</b> of normal
       </div>
     </div>
@@ -98,21 +98,21 @@ export function PredictionAreaChart({
   const peak = drawn.length
     ? drawn.reduce((a, b) => ((b.rain ?? 0) > (a.rain ?? 0) ? b : a))
     : null
-  const peakNearEnd =
-    peak !== null && view.findIndex((p) => p.label === peak.label) >= view.length - 2
 
   return (
-    <GlassCard className="min-h-0 flex-2 flex-col">
+    <GlassCard className="min-h-0 min-w-0 flex-[2.2] flex-col px-3 py-2.5 max-lg:min-h-72">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <CardTitle icon={CloudRain}>Can the ground handle the rain?</CardTitle>
+          <CardTitle icon={CloudRain}>
+            Can the ground handle the rain?
+          </CardTitle>
           <div className="-mt-1 mb-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
-              <span className="h-2.5 w-4 rounded-full bg-[#5b9fc4]/50" />
+              <span className="h-2.5 w-4 rounded-full bg-[#2f7fb0]/50" />
               Rain each month
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-0.5 w-4 rounded-full bg-[#3aa882]" />
+              <span className="w-4 border-t-2 border-dashed border-[#1f8f6b]" />
               Rain the ground can soak up
             </span>
           </div>
@@ -140,12 +140,23 @@ export function PredictionAreaChart({
         </Select>
       </div>
 
-      <ChartContainer config={config} className="clay-inset min-h-0 w-full flex-1 p-2 pt-3">
+      <ChartContainer
+        config={config}
+        className="clay-inset min-h-44 w-full flex-1 p-1.5 pt-2 lg:min-h-0"
+      >
         <AreaChart data={view} margin={{ left: 0, right: 12, top: 14 }}>
           <defs>
             <linearGradient id="rainFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-rain)" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="var(--color-rain)" stopOpacity={0.03} />
+              <stop
+                offset="0%"
+                stopColor="var(--color-rain)"
+                stopOpacity={0.55}
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-rain)"
+                stopOpacity={0.05}
+              />
             </linearGradient>
           </defs>
 
@@ -154,8 +165,8 @@ export function PredictionAreaChart({
             <ReferenceLine
               key={y}
               y={y}
-              stroke="rgba(6,78,59,0.14)"
-              strokeDasharray="2 6"
+              stroke="rgba(6,78,59,0.28)"
+              strokeDasharray="3 5"
             />
           ))}
 
@@ -165,20 +176,24 @@ export function PredictionAreaChart({
             axisLine={false}
             interval={0}
             tickMargin={8}
-            padding={{ left: 10, right: 10 }}
-            tick={{ fontSize: 11, fill: "#7a877a" }}
+            padding={{ left: 26, right: 10 }}
+            tick={{ fontSize: 12, fill: "#3f4f44" }}
           />
           <YAxis
-            domain={[0, 110]}
+            domain={[0, 120]}
             ticks={ZONE_TICKS}
             tickFormatter={zoneWord}
             tickLine={false}
             axisLine={false}
-            width={72}
-            tick={{ fontSize: 11, fill: "#7a877a" }}
+            width={86}
+            tick={{ fontSize: 12, fill: "#3f4f44" }}
           />
           <ChartTooltip
-            cursor={{ stroke: "#3aa882", strokeOpacity: 0.4, strokeDasharray: "3 4" }}
+            cursor={{
+              stroke: "#3aa882",
+              strokeOpacity: 0.4,
+              strokeDasharray: "3 4",
+            }}
             content={<FriendlyTooltip />}
           />
 
@@ -187,9 +202,10 @@ export function PredictionAreaChart({
             dataKey="soak"
             type="monotone"
             stroke="var(--color-soak)"
-            strokeOpacity={0.85}
+            strokeOpacity={0.95}
+            strokeDasharray="7 5"
             fill="none"
-            strokeWidth={1.75}
+            strokeWidth={2.25}
             isAnimationActive={false}
             activeDot={{ r: 4, strokeWidth: 0 }}
           />
@@ -198,9 +214,14 @@ export function PredictionAreaChart({
             type="monotone"
             stroke="var(--color-rain)"
             fill="url(#rainFill)"
-            strokeWidth={2.25}
+            strokeWidth={3}
             isAnimationActive={false}
-            activeDot={{ r: 5, fill: "#fff", stroke: "#5b9fc4", strokeWidth: 2 }}
+            activeDot={{
+              r: 5,
+              fill: "#fff",
+              stroke: "#2f7fb0",
+              strokeWidth: 2,
+            }}
           />
 
           {peak && peak.rain !== null && (
@@ -209,14 +230,15 @@ export function PredictionAreaChart({
               y={peak.rain}
               r={4.5}
               fill="#fff"
-              stroke="#5b9fc4"
+              stroke="#2f7fb0"
               strokeWidth={2}
               ifOverflow="visible"
               label={{
                 value: "Wettest",
-                position: peakNearEnd ? "left" : "right",
-                fontSize: 11,
-                fill: "#5b9fc4",
+                position: "bottom",
+                fontSize: 12,
+                fontWeight: 700,
+                fill: "#2f7fb0",
                 offset: 10,
               }}
             />
