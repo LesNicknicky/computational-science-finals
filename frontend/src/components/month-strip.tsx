@@ -38,9 +38,12 @@ interface Props {
   months: MonthResult[]
   activeIndex: number
   playing: boolean
+  /** first and last month (0-based) of the duration being simulated */
+  start: number
+  end: number
 }
 
-export function MonthStrip({ months, activeIndex, playing }: Props) {
+export function MonthStrip({ months, activeIndex, playing, start, end }: Props) {
   const active = months[activeIndex] ?? months[months.length - 1]
   const ActiveIcon = BADGE[active.status].icon
 
@@ -52,13 +55,18 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
           const b = BADGE[m.status]
           const Icon = b.icon
           const Rain = rainIcon(m.rainPct)
+          const inRange = i >= start && i <= end
+          const isPartial = start > 0 || end < months.length - 1
           return (
             <div
               key={m.month}
               title={`Month ${m.month}: ${rainWord(m.rainPct)} rain, ${STATUS_COPY[m.status].label}`}
               className={cn(
                 "clay-sm flex min-w-0 flex-col items-center gap-1 py-1.5 transition-all duration-300",
-                i > activeIndex && "opacity-30",
+                // months outside the chosen duration are muted; inside, the ones not reached yet fade
+                !inRange && "opacity-25 saturate-0",
+                inRange && i > activeIndex && "opacity-40",
+                isPartial && inRange && !playing && "ring-2 ring-emerald-300/70",
                 playing &&
                   i === activeIndex &&
                   cn("-translate-y-1 scale-105 ring-4 ring-offset-0", b.ring)
@@ -73,10 +81,7 @@ export function MonthStrip({ months, activeIndex, playing }: Props) {
                   b.badge
                 )}
               >
-                <Icon
-                  className="size-4.5"
-                  aria-label={STATUS_COPY[m.status].label}
-                />
+                <Icon className="size-4.5" aria-label={STATUS_COPY[m.status].label} />
               </span>
               <Rain
                 className={cn("size-4", rainText(m.rainPct))}

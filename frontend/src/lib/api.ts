@@ -37,7 +37,14 @@ async function download(path: string, filename: string) {
   URL.revokeObjectURL(url)
 }
 
-export const exportPlot = () =>
-  download("/export/plot", "simulation-report.svg")
+// start/end are the first and last month (1-12) to put in the report; default is the whole year
+const reportName = (start: number, end: number, ext: string) =>
+  start === 1 && end === 12
+    ? `simulation-report.${ext}`
+    : `simulation-report-months-${start}-${end}.${ext}`
 
-export const exportPdf = () => download("/export/pdf", "simulation-report.pdf")
+export const exportPlot = (start = 1, end = 12) =>
+  download(`/export/plot?start=${start}&end=${end}`, reportName(start, end, "svg"))
+
+export const exportPdf = (start = 1, end = 12) =>
+  download(`/export/pdf?start=${start}&end=${end}`, reportName(start, end, "pdf"))

@@ -49,10 +49,10 @@ export function RegionMap({ value, onChange, className }: Props) {
                 }
               }}
               className={cn(
-                "cursor-pointer stroke-white transition-colors outline-none focus-visible:stroke-emerald-900",
+                "cursor-pointer stroke-white outline-none transition-colors focus-visible:stroke-emerald-900",
                 r.id === value
-                  ? "fill-emerald-500"
-                  : "fill-emerald-200 hover:fill-emerald-300"
+                  ? "fill-emerald-700"
+                  : "fill-emerald-300 hover:fill-emerald-400"
               )}
               strokeWidth={r.id === value ? 1.2 : 0.8}
               strokeLinejoin="round"

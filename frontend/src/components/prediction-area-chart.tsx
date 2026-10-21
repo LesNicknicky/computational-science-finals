@@ -1,4 +1,3 @@
-import { useState } from "react"
 import {
   Area,
   AreaChart,
@@ -14,13 +13,6 @@ import {
   ChartTooltip,
   type ChartConfig,
 } from "@/components/ui/chart"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { rainWord } from "@/lib/copy"
 import type { MonthResult } from "@/types/dashboard"
 
@@ -28,14 +20,6 @@ const config = {
   rain: { label: "Rain", color: "#2f7fb0" },
   soak: { label: "Ground soak-up", color: "#1f8f6b" },
 } satisfies ChartConfig
-
-const RANGES = [
-  { value: "all", label: "Whole year" },
-  { value: "1", label: "Months 1–3" },
-  { value: "2", label: "Months 4–6" },
-  { value: "3", label: "Months 7–9" },
-  { value: "4", label: "Months 10–12" },
-]
 
 // Same cut-offs as rainWord() in lib/copy.ts, so the chart, the Rain tile and
 // the month cards all use the same words. Words sit on the left axis, centred
@@ -79,11 +63,14 @@ function FriendlyTooltip({
 export function PredictionAreaChart({
   months,
   activeIndex,
+  start,
+  end,
 }: {
   months: MonthResult[]
   activeIndex: number
+  start: number
+  end: number
 }) {
-  const [range, setRange] = useState("all")
   // months after the active one are null, so the area "draws itself" while playing
   const data: Point[] = months.map((m, i) => ({
     label: `M${m.month}`,
@@ -91,8 +78,8 @@ export function PredictionAreaChart({
     rain: i <= activeIndex ? m.rainPct : null,
     soak: i <= activeIndex ? m.soakPct : null,
   }))
-  const q = Number(range)
-  const view = range === "all" ? data : data.slice((q - 1) * 3, q * 3)
+  // the duration picked next to Simulate decides which months the chart shows
+  const view = data.slice(start, end + 1)
 
   const drawn = view.filter((p) => p.rain !== null)
   const peak = drawn.length
@@ -103,9 +90,7 @@ export function PredictionAreaChart({
     <GlassCard className="min-h-0 min-w-0 flex-[2.2] flex-col px-3 py-2.5 max-lg:min-h-72">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <CardTitle icon={CloudRain}>
-            Can the ground handle the rain?
-          </CardTitle>
+          <CardTitle icon={CloudRain}>Can the ground handle the rain?</CardTitle>
           <div className="-mt-1 mb-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-4 rounded-full bg-[#2f7fb0]/50" />
@@ -117,46 +102,14 @@ export function PredictionAreaChart({
             </span>
           </div>
         </div>
-        {/* Base UI Select passes `string | null`, so guard the null */}
-        <Select
-          items={RANGES}
-          value={range}
-          onValueChange={(v) => v && setRange(v)}
-        >
-          <SelectTrigger
-            size="sm"
-            className="w-36 shrink-0"
-            aria-label="Time range"
-          >
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {RANGES.map((r) => (
-              <SelectItem key={r.value} value={r.value}>
-                {r.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
-      <ChartContainer
-        config={config}
-        className="clay-inset min-h-44 w-full flex-1 p-1.5 pt-2 lg:min-h-0"
-      >
+      <ChartContainer config={config} className="clay-inset min-h-44 w-full flex-1 lg:min-h-0 p-1.5 pt-2">
         <AreaChart data={view} margin={{ left: 0, right: 12, top: 14 }}>
           <defs>
             <linearGradient id="rainFill" x1="0" y1="0" x2="0" y2="1">
-              <stop
-                offset="0%"
-                stopColor="var(--color-rain)"
-                stopOpacity={0.55}
-              />
-              <stop
-                offset="100%"
-                stopColor="var(--color-rain)"
-                stopOpacity={0.05}
-              />
+              <stop offset="0%" stopColor="var(--color-rain)" stopOpacity={0.55} />
+              <stop offset="100%" stopColor="var(--color-rain)" stopOpacity={0.05} />
             </linearGradient>
           </defs>
 
@@ -189,11 +142,7 @@ export function PredictionAreaChart({
             tick={{ fontSize: 12, fill: "#3f4f44" }}
           />
           <ChartTooltip
-            cursor={{
-              stroke: "#3aa882",
-              strokeOpacity: 0.4,
-              strokeDasharray: "3 4",
-            }}
+            cursor={{ stroke: "#3aa882", strokeOpacity: 0.4, strokeDasharray: "3 4" }}
             content={<FriendlyTooltip />}
           />
 
@@ -216,12 +165,7 @@ export function PredictionAreaChart({
             fill="url(#rainFill)"
             strokeWidth={3}
             isAnimationActive={false}
-            activeDot={{
-              r: 5,
-              fill: "#fff",
-              stroke: "#2f7fb0",
-              strokeWidth: 2,
-            }}
+            activeDot={{ r: 5, fill: "#fff", stroke: "#2f7fb0", strokeWidth: 2 }}
           />
 
           {peak && peak.rain !== null && (

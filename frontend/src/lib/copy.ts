@@ -28,12 +28,12 @@ export function formatLeadTime(days: number) {
   return plural(Math.floor(d / 30), "month")
 }
 
-export function headline(months: MonthResult[]) {
+export function headline(months: MonthResult[], scope = "all year") {
   const danger = months.find((m) => m.status === "danger")
   if (danger) return `Flooding is likely in month ${danger.month}`
   const careful = months.find((m) => m.status === "careful")
   if (careful) return `Be careful in month ${careful.month}`
-  return "Safe from flooding all year"
+  return `Safe from flooding ${scope}`
 }
 
 export function worstStatus(months: MonthResult[]): MonthStatus {

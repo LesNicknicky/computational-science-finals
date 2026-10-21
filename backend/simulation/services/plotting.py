@@ -59,12 +59,27 @@ def _card(ax, x: float, y: float, w: float, h: float, value: str, label: str) ->
     ax.text(x + w / 2, y + h * 0.20, label, ha="center", va="center", fontsize=10, color=GRAY)
 
 
-def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: IO) -> None:
-    """Draw the one-page A4 report once and save it as `fmt` ("svg" or "pdf") into `buf`."""
+def _render(
+    req: SimulationRequest,
+    result: SimulationResponse,
+    fmt: str,
+    buf: IO,
+    start: int = 1,
+    end: int = 12,
+) -> None:
+    """Draw the one-page A4 report once and save it as `fmt` ("svg" or "pdf") into `buf`.
+
+    `start` and `end` are the first and last month (1-12) to show; the default is the whole year.
+    """
     region = _pretty(req.region)
-    risks = [p.risk for p in result.prediction]
-    recovered = [m.absorptionRecoveredPct for m in result.months]
-    rain = [m.rainfallMm for m in result.months]
+    lo, hi = start - 1, end  # slice bounds (0-based, end exclusive)
+    n = hi - lo
+    partial = n != 12
+    names = MONTHS[lo:hi]
+    period = f"{names[0]}–{names[-1]}" if n > 1 else names[0]
+    risks = [p.risk for p in result.prediction][lo:hi]
+    recovered = [m.absorptionRecoveredPct for m in result.months][lo:hi]
+    rain = [m.rainfallMm for m in result.months][lo:hi]
     lead = _lead_time(result.leadTimeMonths)
 
     # fonttype 42 keeps the PDF text real (selectable) instead of outlines
@@ -80,9 +95,11 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
 
         # Title
         page.text(left, 11.05, "Tree Cutting and Replanting Plan", fontsize=21, fontweight="bold")
-        page.text(left, 10.72,
-                  f"{region}  ·  Ground: {_pretty(req.groundType)}  ·  {datetime.now().astimezone():%B %d, %Y}",
-                  fontsize=10, color=GRAY)
+        subtitle = f"{region}  ·  Ground: {_pretty(req.groundType)}"
+        if partial:
+            subtitle += f"  ·  Months {start}–{end} ({period})"
+        subtitle += f"  ·  {datetime.now().astimezone():%B %d, %Y}"
+        page.text(left, 10.72, subtitle, fontsize=10, color=GRAY)
 
         # One plain sentence
         if result.leadTimeMonths is None:
@@ -105,8 +122,10 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
 
         # Month-by-month strip
         page.text(left, 7.7, "Is it safe, month by month?", fontsize=13, fontweight="bold")
-        bw, bgap, by, bh = 0.55, 0.05, 6.85, 0.6
-        for i, month in enumerate(MONTHS):
+        # the strip spans the same width as 12 cells, so fewer months get wider cells
+        bgap, by, bh = 0.05, 6.85, 0.6
+        bw = min((12 * 0.55 + 11 * 0.05 - (n - 1) * bgap) / n, 1.4)
+        for i, month in enumerate(names):
             x = left + i * (bw + bgap)
             page.add_patch(FancyBboxPatch((x, by), bw, bh, boxstyle="round,pad=0,rounding_size=0.06",
                                           facecolor=RISK_FILL[risks[i]], edgecolor="#9ca3af", linewidth=0.8))
@@ -122,10 +141,10 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
             lx += 1.5
 
         # One-line verdict
-        danger = [i for i, r in enumerate(risks) if r == "warning"]
-        careful = [i for i, r in enumerate(risks) if r == "watch"]
+        danger = [lo + i for i, r in enumerate(risks) if r == "warning"]
+        careful = [lo + i for i, r in enumerate(risks) if r == "watch"]
         if not danger and not careful:
-            verdict = "All 12 months look safe."
+            verdict = "All 12 months look safe." if not partial else f"All {n} months ({period}) look safe."
         else:
             parts = []
             if danger:
@@ -140,14 +159,14 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
         page.text(left, 5.38, "How much of the forest's rain-soaking power is back after cutting",
                   fontsize=9, color=GRAY)
 
-        x = list(range(12))
+        x = list(range(n))
         rect = (1.1 / PAGE_W, 2.55 / PAGE_H, 5.9 / PAGE_W, 2.5 / PAGE_H)
 
         # Rain bars on their own (right-hand) axis, kept short so they stay in the background
         ax_rain = fig.add_axes(rect)
         top = max(rain) if max(rain) > 0 else 1
         ax_rain.bar(x, rain, width=0.6, color="#93c5fd", alpha=0.55)
-        ax_rain.set_xlim(-0.5, 11.5)
+        ax_rain.set_xlim(-0.5, n - 0.5)
         ax_rain.set_ylim(0, top * 2.2)
         ax_rain.yaxis.tick_right()
         ax_rain.yaxis.set_label_position("right")
@@ -163,9 +182,9 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
         ax.patch.set_visible(False)
         ax.fill_between(x, recovered, alpha=0.22, color=GREEN)
         ax.plot(x, recovered, color=GREEN, linewidth=2.5)
-        ax.set_xlim(-0.5, 11.5)
+        ax.set_xlim(-0.5, n - 0.5)
         ax.set_xticks(x)
-        ax.set_xticklabels(MONTHS, fontsize=9)
+        ax.set_xticklabels(names, fontsize=9)
         ax.set_ylim(0, 105)
         ax.set_yticks([0, 25, 50, 75, 100])
         ax.set_yticklabels(["0%", "25%", "50%", "75%", "100%"], fontsize=9)
@@ -197,13 +216,17 @@ def _render(req: SimulationRequest, result: SimulationResponse, fmt: str, buf: I
         fig.savefig(buf, format=fmt)
 
 
-def build_report_svg(req: SimulationRequest, result: SimulationResponse) -> str:
+def build_report_svg(
+    req: SimulationRequest, result: SimulationResponse, start: int = 1, end: int = 12
+) -> str:
     buf = StringIO()
-    _render(req, result, "svg", buf)
+    _render(req, result, "svg", buf, start, end)
     return buf.getvalue()
 
 
-def build_report_pdf(req: SimulationRequest, result: SimulationResponse) -> bytes:
+def build_report_pdf(
+    req: SimulationRequest, result: SimulationResponse, start: int = 1, end: int = 12
+) -> bytes:
     buf = BytesIO()
-    _render(req, result, "pdf", buf)
+    _render(req, result, "pdf", buf, start, end)
     return buf.getvalue()

@@ -11,12 +11,12 @@ import type { GroundType, RegionId } from "@/types/simulation"
 
 const RAIN_SEED = 42 // fixed for now; no "New rain" button in the new layout
 
-const GROUND_OPTIONS = (
-  Object.entries(GROUND_TYPES) as [GroundType, string][]
-).map(([value, label]) => ({
-  value,
-  label: label.charAt(0).toUpperCase() + label.slice(1),
-}))
+const GROUND_OPTIONS = (Object.entries(GROUND_TYPES) as [GroundType, string][]).map(
+  ([value, label]) => ({
+    value,
+    label: label.charAt(0).toUpperCase() + label.slice(1),
+  })
+)
 
 export default function SimulationPage() {
   const [region, setRegion] = useState<RegionId>("caraga")
@@ -54,18 +54,15 @@ export default function SimulationPage() {
   return (
     <div className="relative flex min-w-0 flex-1 flex-col">
       {error && (
-        <Alert
-          variant="destructive"
-          className="absolute top-3 right-3 z-10 w-80"
-        >
+        <Alert variant="destructive" className="absolute top-3 right-3 z-10 w-80">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
       {result ? (
         <SimulationDashboard
           result={result}
-          onExport={() =>
-            exportPdf()
+          onExport={(start, end) =>
+            exportPdf(start, end)
               .then(() => setError(null))
               .catch((e: Error) => setError(e.message))
           }
