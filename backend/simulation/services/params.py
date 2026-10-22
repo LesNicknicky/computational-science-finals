@@ -33,6 +33,12 @@ def surface_params(ground_type: str) -> dict:
         }
     raise ValueError(f"unknown ground type '{ground_type}'")  # CHANGED: no silent None
 
+def region_trees(region: str) -> int:
+    """Mature trees represented by a region's log volume (m3 / volume per tree)."""
+    vol = C.REGION_LOGS["log_volume_m3"].get(region)
+    if vol is None:
+        raise C.ConstantNotSet(f"no log volume for '{region}'")
+    return round(vol / C.VOLUME_PER_TREE_M3)
 
 def rain_params(region: str) -> list[tuple[float, float, float]]:
     """Twelve (p_w, alpha, mu_w) tuples for Eq 5."""

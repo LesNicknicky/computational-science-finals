@@ -26,9 +26,9 @@ export interface SimulationFormProps {
 
 export function SimulationForm(p: SimulationFormProps) {
   const region = REGIONS.find((r) => r.id === p.regionId) ?? REGIONS[0]
-  const station = (
-    PRESETS[region.id as RegionId] as { station?: string } | undefined
-  )?.station
+  const preset = PRESETS[region.id as RegionId] as
+    | (typeof PRESETS)[RegionId]
+    | undefined
   const cutTrees = Math.round((p.cutPercent / 100) * p.matureTrees)
 
   return (
@@ -44,8 +44,21 @@ export function SimulationForm(p: SimulationFormProps) {
           {region.name}
         </div>
         <div className="text-xs text-muted-foreground">
-          Rain data: {station ?? "PAGASA station"}
+          Rain data: PAGASA station {preset?.station ?? "—"}
         </div>
+        {preset && (
+          <div className="text-xs text-muted-foreground">
+            Log production:{" "}
+            <span className="font-semibold text-foreground">
+              {preset.logM3.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              m³
+            </span>{" "}
+             approximately (early 2023)
+          </div>
+        )}
       </div>
       <p className="mt-1.5 px-1 text-[11px] leading-tight text-muted-foreground">
         Greyed-out regions aren&apos;t available yet: their rain data is not

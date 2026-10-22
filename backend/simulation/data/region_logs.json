@@ -1,0 +1,10 @@
+{
+  "source": "DENR-FMB Forestry Sector Report 2023 (data updated May 19, 2023), log production, early 2023 only (not a full year)",
+  "log_volume_m3": {
+    "caraga": 83565.60,
+    "calabarzon": 13218.68,
+    "northern_mindanao": 5169.79,
+    "central_visayas": 2695.03,
+    "ilocos": 2683.35
+  }
+}

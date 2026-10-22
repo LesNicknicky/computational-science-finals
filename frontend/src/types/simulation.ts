@@ -15,6 +15,10 @@ export interface RegionPreset {
   id: RegionId
   label: string
   matureTrees: number
+  /** PAGASA station used for the rain data */
+  station: string
+  /** Log production in m³ (early 2023, DENR-FMB) */
+  logM3: number
 }
 
 export interface SimulationRequest {

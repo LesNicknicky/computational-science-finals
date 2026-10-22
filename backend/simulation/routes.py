@@ -5,6 +5,7 @@ from .models.schemas import SimulationRequest, SimulationResponse
 from .services.params import build_run_args
 from .services.plotting import build_report_pdf, build_report_svg
 from .services.simulator import run_year
+from .services.params import build_run_args, region_trees
 
 router = APIRouter()
 
@@ -17,10 +18,11 @@ def simulate(req: SimulationRequest) -> SimulationResponse:
     global last_run
     ground = "gravel_or_dirt" if req.groundType == "gravel_dirt" else req.groundType
     try:
+        n_trees = region_trees(req.region)
         args = build_run_args(
             region=req.region,
             ground_type=ground,
-            n_trees=req.matureTrees,
+            n_trees=n_trees,
             cut_fraction=req.cutPercentage / 100,
             seed=req.rainSeed,
         )
@@ -29,6 +31,7 @@ def simulate(req: SimulationRequest) -> SimulationResponse:
         raise HTTPException(status_code=400, detail=str(e))
 
     result = SimulationResponse(**out)
+    req.matureTrees = n_trees  # exports read the tree count from the request
     last_run = (req, result)
     return result
 

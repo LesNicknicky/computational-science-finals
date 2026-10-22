@@ -14,7 +14,7 @@ RiskLevel = Literal["safe", "watch", "warning"]
 class SimulationRequest(BaseModel):
     region: RegionId
     groundType: GroundType
-    matureTrees: int = Field(gt=0)
+    matureTrees: int | None = Field(default=None, gt=0)
     cutPercentage: float = Field(ge=0, le=100)
     rainSeed: int
 
@@ -41,3 +41,4 @@ class SimulationResponse(BaseModel):
     leadTimeMonths: float | None  # None when the cut can never be offset
     months: list[MonthResult]
     prediction: list[PredictionRow]
+    

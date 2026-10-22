@@ -1,4 +1,15 @@
-import { BookOpen, CalendarDays, Download, Play, ShieldCheck, Square } from "lucide-react"
+import {
+  BookOpen,
+  CalendarDays,
+  ChartNoAxesCombined,
+  Download,
+  ArrowLeftSquare,
+  Lightbulb,
+  LoaderCircle,
+  Play,
+  ShieldCheck,
+  Square,
+} from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { GlassCard, CardTitle } from "@/components/glass-card"
@@ -40,7 +51,7 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
   const isWhole = range.value === "all"
   const scoped = result.months.slice(range.start, range.end + 1)
   // passing `result` resets to the chosen range whenever a new result arrives
-  const { index, playing, toggle } = usePlaySequence(
+  const { index, playing, done, toggle } = usePlaySequence(
     result.months.length,
     700,
     result,
@@ -71,13 +82,22 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
             {PROJECT.title}
           </p>
         </div>
-        <Link
-          to="/guide"
-          className={buttonVariants({ variant: "outline", size: "lg" })}
-          aria-label="Open the guide"
-        >
-          <BookOpen /> Guide
-        </Link>
+        <div className="flex items-center gap-2.5">
+          <Link
+            to="/"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+            aria-label="Back to the landing page"
+          >
+            <ArrowLeftSquare /> Return To Landing Page
+          </Link>
+          <Link
+            to="/guide"
+            className={buttonVariants({ variant: "outline", size: "lg" })}
+            aria-label="Open the guide"
+          >
+            <BookOpen /> Guide
+          </Link>
+        </div>
       </header>
 
       <div className="relative grid min-h-0 flex-1 gap-3 lg:grid-rows-[minmax(0,1fr)] lg:grid-cols-[330px_minmax(0,1fr)_290px]">
@@ -154,30 +174,83 @@ export function SimulationDashboard({ result, form, onExport }: Props) {
             <CardTitle icon={CalendarDays}>
               {isWhole ? "The year, month by month" : `${range.label}, month by month`}
             </CardTitle>
-            <MonthStrip
-              months={result.months}
-              activeIndex={index}
-              playing={playing}
-              start={range.start}
-              end={range.end}
-            />
+            {done ? (
+              <MonthStrip
+                months={result.months}
+                activeIndex={index}
+                playing={playing}
+                start={range.start}
+                end={range.end}
+              />
+            ) : (
+              <div className="clay-inset flex h-26 items-center justify-center gap-2 px-4 text-sm text-muted-foreground">
+                {playing ? (
+                  <LoaderCircle className="size-4 animate-spin text-emerald-600" aria-hidden />
+                ) : (
+                  <CalendarDays className="size-4 text-emerald-600" aria-hidden />
+                )}
+                {playing
+                  ? "Simulating… the months appear when it finishes or you press Stop."
+                  : "Press Simulate to see the months."}
+              </div>
+            )}
           </GlassCard>
 
           <div className="flex min-h-0 flex-1 gap-3">
-            <PredictionAreaChart
-              months={result.months}
-              activeIndex={index}
-              start={range.start}
-              end={range.end}
-            />
-            <YearGlance months={scoped} whole={isWhole} label={range.label} />
+            {done ? (
+              <>
+                <PredictionAreaChart
+                  months={result.months}
+                  activeIndex={index}
+                  start={range.start}
+                  end={range.end}
+                />
+                <YearGlance months={scoped} whole={isWhole} label={range.label} />
+              </>
+            ) : (
+              <GlassCard className="min-h-0 min-w-0 flex-1 flex-col items-center justify-center gap-2 px-4 py-3 text-center max-lg:min-h-64">
+                {playing ? (
+                  <LoaderCircle className="size-9 animate-spin text-emerald-600" aria-hidden />
+                ) : (
+                  <ChartNoAxesCombined className="size-9 text-emerald-600" aria-hidden />
+                )}
+                <p className="text-base font-bold text-emerald-900">
+                  {playing ? "Simulating…" : "Graphs show after the simulation"}
+                </p>
+                <p className="text-[13px] text-muted-foreground">
+                  {playing
+                    ? "The graphs appear when it finishes, or when you press Stop."
+                    : "Press Simulate to run the months and see the results."}
+                </p>
+              </GlassCard>
+            )}
           </div>
         </div>
 
         <div className="flex min-h-0 flex-col gap-3">
-          <HighlightTiles month={result.months[index]} result={result} />
-          <CutVsPlanted result={result} />
-          <InterpretationPanel result={result} className="lg:min-h-0 lg:flex-1" />
+          {done ? (
+            <>
+              <HighlightTiles month={result.months[index]} result={result} />
+              <CutVsPlanted result={result} />
+              <InterpretationPanel result={result} className="lg:min-h-0 lg:flex-1" />
+            </>
+          ) : (
+            <GlassCard className="min-h-0 flex-1 flex-col items-center justify-center gap-2 px-4 py-3 text-center max-lg:min-h-64">
+              {playing ? (
+                <LoaderCircle className="size-9 animate-spin text-emerald-600" aria-hidden />
+              ) : (
+                <Lightbulb className="size-9 text-emerald-600" aria-hidden />
+              )}
+              <p className="text-base font-bold text-emerald-900">
+                {playing ? "Simulating…" : "Results show after the simulation"}
+              </p>
+              <p className="text-[13px] text-muted-foreground">
+                {playing
+                  ? "The numbers and what they mean appear when it finishes, or when you press Stop."
+                  : "Press Simulate to see the numbers and what they mean."}
+              </p>
+            </GlassCard>
+          )}
         </div>
       </div>
     </div>

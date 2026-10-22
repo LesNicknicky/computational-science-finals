@@ -42,104 +42,233 @@ interface Reference {
   check?: string
 }
 
-// Order here sets the [1], [2]... numbers shown on the page.
+// Same order and numbering as the References list in the paper ([1] to [43]).
+// Add new references at the END so existing numbers don't shift.
 const REFERENCES: Reference[] = [
   {
-    id: "denr-fmb",
+    id: "fao",
     citation:
-      "Department of Environment and Natural Resources, Forest Management Bureau. (2023). Forestry sector report 2023: Production of major forest products [Data updated May 19, 2023].",
-    check: "Add the link",
+      "Food and Agriculture Organization of the United Nations, Global Forest Resources Assessment 2025. Rome, Italy: FAO, 2025.",
   },
   {
-    id: "denr-dmo",
+    id: "bruijnzeel",
     citation:
-      "Department of Environment and Natural Resources. (2012). Uniform replacement ratio for cut or relocated trees (DENR Memorandum Order No. 2012-02).",
-    check: "Compare with the official FMB copy",
-  },
-  {
-    id: "pagasa",
-    citation:
-      "Philippine Atmospheric, Geophysical and Astronomical Services Administration. (n.d.). Climatological normals, 1991–2020 [Data set]. PAGASA.",
-    check: "Add link and station pages",
-  },
-  {
-    id: "tr55",
-    citation:
-      "U.S. Department of Agriculture, Soil Conservation Service. (1986). Urban hydrology for small watersheds (Technical Release 55). USDA-SCS.",
+      "L. A. Bruijnzeel, “Hydrological functions of tropical forests: Not seeing the soil for the trees?,” Agriculture, Ecosystems & Environment, vol. 104, no. 1, pp. 185-228, 2004, doi: 10.1016/j.agee.2004.01.015.",
   },
   {
     id: "neh630",
     citation:
-      "U.S. Department of Agriculture, Natural Resources Conservation Service. (2004). Estimation of direct runoff from storm rainfall. In National engineering handbook, Part 630: Hydrology (Chapter 10). USDA-NRCS.",
+      "U.S. Department of Agriculture, Natural Resources Conservation Service, National Engineering Handbook, Part 630: Hydrology, Chapter 10: Estimation of Direct Runoff, 2004.",
     check: "Pick one source for the 0.2 value (this or TR-55)",
   },
   {
-    id: "rawls",
+    id: "denr-fmb",
     citation:
-      "Rawls, W. J., Ahuja, L. R., Brakensiek, D. L., & Shirmohammadi, A. (1993). Infiltration and soil water movement. In D. R. Maidment (Ed.), Handbook of hydrology (pp. 5.1–5.51). McGraw-Hill.",
-    check: "Confirm page range",
+      "Forest Management Bureau, Department of Environment and Natural Resources, “Forestry Sector Report,” 2023. [Online]. Available: https://forestry.denr.gov.ph/fmb_web/wp-content/uploads/2023/05/ForestrySectorReport_2023.pdf",
   },
   {
-    id: "txdot",
+    id: "garen",
     citation:
-      "Texas Department of Transportation. (n.d.). Hydraulic design manual (Table 4-27). TxDOT.",
-    check: "Add year, link, and date accessed",
+      "D. C. Garen and D. S. Moore, “Curve number hydrology in water quality modeling: Uses, abuses, and future directions,” Journal of the American Water Resources Association, vol. 41, no. 2, pp. 377-388, 2005, doi: 10.1111/j.1752-1688.2005.tb03742.x.",
   },
   {
-    id: "quimio",
+    id: "bieger",
     citation:
-      "Quimio, [initials]. (2016). [Title]. Annals of Tropical Research, 38(2), 30–51. https://doi.org/10.32945/atr3823.2016",
-    check: "Fill in author initials and title",
-  },
-  {
-    id: "lasco",
-    citation: "Lasco, R. D., et al. (2006). [Title and journal to confirm].",
-    check: "Full citation needed",
-  },
-  {
-    id: "marryanna",
-    citation: "Marryanna, L., et al. (2023). [Title and journal to confirm].",
-    check: "Full citation needed",
-  },
-  {
-    id: "jordan",
-    citation:
-      "Jordan, C. F., & Kline, J. R. ([year]). [Title and journal to confirm].",
-    check: "Year and title needed",
-  },
-  {
-    id: "alipon",
-    citation: "Alipon, M. A., et al. (2016). [Title and journal to confirm].",
-    check: "Full citation needed",
-  },
-  {
-    id: "uriarte",
-    citation:
-      "Uriarte, M., & Piñol, J. (1996). [Title and journal to confirm].",
-    check: "Full citation needed",
+      "K. Bieger et al., “Introduction to SWAT+, a completely restructured version of the Soil and Water Assessment Tool,” Journal of the American Water Resources Association, vol. 53, no. 1, pp. 115-130, 2017, doi: 10.1111/1752-1688.12482.",
   },
   {
     id: "richards",
     citation:
-      "Richards, F. J. (1959). A flexible growth function for empirical use. Journal of Experimental Botany, 10(2), 290–301. https://doi.org/10.1093/jxb/10.2.290",
+      "F. J. Richards, “A flexible growth function for empirical use,” Journal of Experimental Botany, vol. 10, no. 2, pp. 290-301, 1959, doi: 10.1093/jxb/10.2.290.",
+  },
+  {
+    id: "shifley",
+    citation:
+      "S. R. Shifley and G. J. Brand, “Chapman-Richards growth function constrained for maximum tree size,” Forest Science, vol. 30, no. 4, pp. 1066-1070, 1984.",
+  },
+  {
+    id: "tr55",
+    citation:
+      "U.S. Department of Agriculture, Soil Conservation Service, Urban Hydrology for Small Watersheds, Technical Release 55 (TR-55), 1986.",
+    check: "Page numbers for the cited formulas still to add",
+  },
+  {
+    id: "denr-dmo",
+    citation:
+      "Department of Environment and Natural Resources, “DENR Memorandum Order No. 2012-02: Establishing a Uniform Replacement Ratio for Cut or Relocated Trees,” 2012. [Online]. Available: https://forestry.denr.gov.ph/fmb_web/wp-content/uploads/2023/06/dmo-2012-02.pdf",
+  },
+  {
+    id: "uriarte",
+    citation:
+      "M. T. Uriarte and A. A. Piñol, “Tree volume, yield prediction and economic rotation of Albizia falcataria in Mindanao, Philippines,” Journal of Tropical Forest Science, vol. 8, no. 3, pp. 289-299, 1996.",
+  },
+  {
+    id: "thom",
+    citation:
+      "H. C. S. Thom, “A note on the gamma distribution,” Monthly Weather Review, vol. 86, no. 4, pp. 117-122, 1958, doi: 10.1175/1520-0493(1958)086<0117:ANOTGD>2.0.CO;2.",
+  },
+  {
+    id: "bermudez",
+    citation:
+      "V. A. B. Bermudez, A. B. B. Abilgos, D. C. N. Cuaresma, and J. F. Rabajante, “Probability distribution of Philippine daily rainfall data,” Preprints.org, 2017, doi: 10.20944/preprints201712.0150.v1.",
+  },
+  {
+    id: "pagasa",
+    citation:
+      "Philippine Atmospheric, Geophysical and Astronomical Services Administration, “Climatological normals (1991-2020): Butuan City, Infanta, Laoag, Mactan, and Malaybalay stations,” n.d. [Online]. Available: https://pubfiles.pagasa.dost.gov.ph/pagasaweb/files/cad/CLIMATOLOGICAL%20NORMALS%20(1991-2020)/ (files BUTUAN CITY.pdf, INFANTA.pdf, LAOAG.pdf, MACTAN.pdf, MALAYBALAY.pdf)",
+  },
+  {
+    id: "green-ampt",
+    citation:
+      "H. A. Green and G. A. Ampt, “Studies on soil physics: Part I. The flow of air and water through soils,” Journal of Agricultural Science, vol. 4, no. 1, pp. 1-24, 1911, doi: 10.1017/S0021859600001441.",
+  },
+  {
+    id: "wsdot",
+    citation:
+      "Washington State Department of Transportation, “Hydraulics Manual, Appendix 4B: TR-55 Curve Number Tables.” [Online]. Available: https://www.wsdot.wa.gov/publications/fulltext/Hydraulics/HRM/App4B_2014.pdf",
+  },
+  {
+    id: "rawls",
+    citation:
+      "W. J. Rawls, D. L. Brakensiek, and K. E. Saxton, “Infiltration and soil water movement,” in Handbook of Hydrology, D. R. Maidment, Ed. New York, NY, USA: McGraw-Hill, 1993.",
+    check: "Authors differ from your notes (Rawls, Ahuja, Brakensiek, Shirmohammadi); pages unverified (notes say 5.1–5.51)",
+  },
+  {
+    id: "txdot",
+    citation:
+      "Texas Department of Transportation, “Green and Ampt loss model,” Hydraulic Design Manual, Table 4-27. [Online]. Available: https://www.txdot.gov/content/dam/txdotoms/des/hyd/hyd.pdf",
+    check: "Add year and date accessed",
   },
   {
     id: "coa",
     citation:
-      "Commission on Audit. (2012, 2013). [National Greening Program audit reports], as reported by the Philippine Institute for Development Studies and the Senate Economic Planning Office.",
-    check: "Titles, years, and report numbers needed",
+      "Commission on Audit, “National Greening Program audit report,” 2019-01. [Online]. Available: https://www.coa.gov.ph/wpfd_file/national-greening-program-pao-2019-01/",
+    check: "Confirm title, year and report number",
   },
   {
-    id: "epa-swmm",
+    id: "marryanna",
     citation:
-      "U.S. Environmental Protection Agency. (2009). SWMM applications manual (EPA/600/R-09/000). EPA.",
-    check: "Confirm page for 1.27 mm",
+      "L. Marryanna, W. A. Wan Mohd Shukri, J. Avelinah, and M. R. Sheriza, “Estimation of sap flow rate in Hopea odorata and Khaya ivorensis,” FRIM Technical Information, no. 88, 2023.",
   },
   {
-    id: "nehls",
+    id: "quimio",
     citation:
-      "Nehls, T., et al. (2015). [Title and journal to confirm; laser-scanning study of 11 pavement designs].",
-    check: "Full citation needed",
+      "M. Quimio, “Floral composition and timber stock of forest in the Samar Island Natural Park,” Annals of Tropical Research, vol. 38, no. 2, pp. 30-51, 2016, doi: 10.32945/atr3823.2016.",
+  },
+  {
+    id: "noah",
+    citation:
+      "Project NOAH, UP DREAM Phil-LiDAR Program, and Department of Science and Technology, “Malate, Metropolitan Manila 25 year flood hazard map,” LiPAD, 2017. [Online]. Available: https://lipad-fmc.dream.upd.edu.ph/layers/geonode:ph133910000_fh25yr_10m",
+  },
+  {
+    id: "luce",
+    citation:
+      "C. H. Luce, “Effectiveness of road ripping in restoring infiltration capacity of forest roads,” Restoration Ecology, vol. 5, no. 3, pp. 265–270, 1997, doi: 10.1046/j.1526-100X.1997.09731.x.",
+  },
+  {
+    id: "trzebiatowski",
+    citation:
+      "B. D. Trzebiatowski and C. H. Benson, “Saturated hydraulic conductivity of compacted recycled asphalt pavement,” Geotechnical Testing Journal, vol. 28, no. 5, pp. 514-519, 2005, doi: 10.1520/GTJ12698.",
+  },
+  {
+    id: "alcober",
+    citation:
+      "A. Alcober and J. Macuha, “Development and analysis of a GIS-based curve number map of the Philippines,” ASEAN Engineering Journal, vol. 14, no. 2, pp. 173-181, 2024, doi: 10.11113/aej.V14.21013.",
+  },
+  {
+    id: "castillo",
+    citation:
+      "L. A. Castillo et al., “Tree composition, diversity, and stand structure of mid-montane forest in Sipit watershed, Mount Makiling Forest Reserve ASEAN Heritage Park, Philippines,” Philippine Journal of Science, vol. 150, no. S1, pp. 257–269, 2021, doi: 10.56899/150.S1.17.",
+  },
+  {
+    id: "alipon",
+    citation:
+      "M. A. Alipon, P. L. Alcachupas, E. O. Bondad, and E. C. Cortiguerra, “Assessing the utilization of 4–8 year-old falcata [Paraserianthes falcataria (L.) Nielsen] for lumber production,” Philippine Journal of Science, vol. 145, no. 3, pp. 225–235, 2016.",
+  },
+  {
+    id: "lasco",
+    citation:
+      "R. D. Lasco, K. G. MacDicken, F. B. Pulhin, I. Q. Guillermo, R. F. Sales, and R. V. O. Cruz, “Carbon stocks assessment of a selectively logged dipterocarp forest and wood processing mill in the Philippines,” Journal of Tropical Forest Science, vol. 18, no. 4, pp. 212–221, 2006.",
+  },
+  {
+    id: "saxton",
+    citation:
+      "K. E. Saxton and W. J. Rawls, “Soil water characteristic estimates by texture and organic matter for hydrologic solutions,” Soil Science Society of America Journal, vol. 70, no. 5, pp. 1569–1578, Sep. 2006, doi: 10.2136/sssaj2005.0117.",
+  },
+  {
+    id: "zhang",
+    citation:
+      "L. Zhang, W. R. Dawes, and G. R. Walker, “Response of mean annual evapotranspiration to vegetation changes at catchment scale,” Water Resources Research, vol. 37, no. 3, pp. 701–708, Mar. 2001, doi: 10.1029/2000WR900325.",
+  },
+  {
+    id: "brown",
+    citation:
+      "N. Brown, Estimating Biomass and Biomass Change of Tropical Forests: A Primer, FAO Forestry Paper 134. Rome, Italy: FAO, 1997.",
+  },
+  {
+    id: "asce",
+    citation:
+      "American Society of Civil Engineers, Design and Construction of Urban Stormwater Management Systems. New York, NY, USA: ASCE, 1992.",
+  },
+  {
+    id: "rawls-ga",
+    citation:
+      "W. J. Rawls, D. L. Brakensiek, and N. Miller, “Green-Ampt infiltration parameters from soils data,” Journal of Hydraulic Engineering, vol. 109, no. 1, pp. 62-70, 1983, doi: 10.1061/(ASCE)0733-9429(1983)109:1(62).",
+  },
+  {
+    id: "jordan",
+    citation:
+      "C. Jordan and J. Kline, “Transpiration of trees in a tropical rainforest,” Journal of Applied Ecology, 1977.",
+    check: "Volume and pages needed",
+  },
+  {
+    id: "bureau-forestry",
+    citation:
+      "Bureau of Forestry, Handbook of Selective Logging, 1970.",
+    check: "Verify publisher and details",
+  },
+  {
+    id: "basilan",
+    citation:
+      "[Author(s) to be verified], “Some useful derivation and application of diameter growth of commercial dipterocarps in the Basilan working circle,” Forestry Leaves, no. 65, 1956.",
+    check: "Author(s) to be verified",
+  },
+  {
+    id: "adb",
+    citation:
+      "Asian Development Bank, Project Document ADB-48271-001. [Online]. Available: https://ewsdata.rightsindevelopment.org/files/documents/01/ADB-48271-001_UoF3Hk7.pdf",
+  },
+  {
+    id: "pids",
+    citation:
+      "Philippine Institute for Development Studies, “Publications concerning survival rates under the National Greening Program.”",
+    check: "Add title, year and link",
+  },
+  {
+    id: "seo",
+    citation:
+      "Senate Economic Planning Office, “Forest-related report.”",
+    check: "Add title, year and link",
+  },
+  {
+    id: "dierick",
+    citation:
+      "D. Dierick and D. Hölscher, “Species-specific tree water use characteristics in reforestation stands in the Philippines,” Agricultural and Forest Meteorology, vol. 149, no. 8, pp. 1317–1326, 2009, doi: 10.1016/j.agrformet.2009.03.003.",
+  },
+  {
+    id: "li-sewer",
+    citation:
+      "D. Li, J. Hou, R. Shen, B. Li, Y. Tong, and T. Wang, “Approximation method for the sewer drainage effect for urban flood modeling in areas without drainage-pipe data,” Frontiers in Environmental Science, vol. 11, Art. no. 1134985, 2023, doi: 10.3389/fenvs.2023.1134985.",
+  },
+  {
+    id: "li-urban",
+    citation:
+      "D. Li et al., “An efficient method for approximately simulating drainage capability for urban flood,” Frontiers in Earth Science, vol. 8, Art. no. 159, 2020, doi: 10.3389/feart.2020.00159.",
+  },
+  {
+    id: "chin",
+    citation:
+      "D. A. Chin, “The curve number method in the 21st century,” Journal of Irrigation and Drainage Engineering, vol. 149, no. 6, 2023, doi: 10.1061/JIDEDH.IRENG-10108.",
   },
 ]
 
@@ -204,7 +333,7 @@ const SOURCES: DataSource[] = [
     usedFor: "Sets how long saplings need before they replace an old tree.",
     goodToKnow:
       "Growth numbers come from falcata, a fast-growing plantation tree.",
-    refIds: ["uriarte", "richards", "marryanna", "alipon", "coa"],
+    refIds: ["uriarte", "richards", "marryanna", "alipon", "coa", "pids", "seo"],
   },
 ]
 
@@ -236,8 +365,11 @@ const RAIN_STATIONS: RainStation[] = [
   {
     region: "Caraga",
     station: "Butuan City",
-    monthly: null,
-    note: "Monthly numbers not shown here yet.",
+    monthly: [
+      326.4, 234.5, 148.9, 116.9, 111.4, 174.3, 152.4, 114.4, 126.5, 170.4,
+      197.8, 251.8,
+    ],
+    note: "Wettest in January, driest in May.",
   },
   {
     region: "Calabarzon",
@@ -259,9 +391,12 @@ const RAIN_STATIONS: RainStation[] = [
   },
   {
     region: "Central Visayas",
-    station: null,
-    monthly: null,
-    note: "Station still to be confirmed.",
+    station: "Mactan International Airport, Cebu",
+    monthly: [
+      135.1, 88.9, 60.9, 55.6, 94.4, 180.7, 210.6, 157.9, 190.4, 207.6,
+      131.0, 171.9,
+    ],
+    note: "Monthly values still need a double-check against the PAGASA table.",
   },
   {
     region: "Ilocos",
@@ -340,7 +475,7 @@ const CONSTANT_GROUPS: ConstantGroup[] = [
         meaning: "Share of planted saplings that survive.",
         value: "68% (range 61–85%)",
         kind: "source",
-        refIds: ["coa"],
+        refIds: ["coa", "pids", "seo"],
         note: "We picked the audited 68%. The 85% is a program target, not a measurement.",
       },
       {
@@ -509,7 +644,7 @@ const GROUND: GroundRow[] = [
     soak: "2 mm/hr (range 0–4)",
     soakKind: "assumption",
     note: "Soak-in is the midpoint of a forest-road range from the literature.",
-    refIds: ["tr55"],
+    refIds: ["tr55", "luce"],
   },
   {
     name: "Partial pavement",
@@ -525,7 +660,7 @@ const GROUND: GroundRow[] = [
     soak: "No sourced value yet",
     soakKind: "todo",
     note: "Pavement holds about 1.27 mm before runoff starts (typical; range 0.6–2.5). That is storage, not drainage speed.",
-    refIds: ["tr55", "epa-swmm", "nehls"],
+    refIds: ["tr55"],
   },
 ]
 
@@ -1135,7 +1270,7 @@ export default function ResearchPage() {
               <SectionTitle
                 icon={ScrollText}
                 title="References"
-                blurb="Full citations for the sources above. Items tagged Check still need a detail confirmed."
+                blurb="All 43 references from the paper, numbered the same way. Items tagged Check still need a detail confirmed."
               />
               <ol className="space-y-3 text-sm">
                 {REFERENCES.map((r, i) => (

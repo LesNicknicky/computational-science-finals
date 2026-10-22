@@ -74,29 +74,32 @@ export function AppHeader({ children }: { children?: React.ReactNode }) {
 
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {children}
-          <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetTrigger
-              render={
-                <Button variant="outline" aria-label="Open the guide">
-                  <BookOpen /> Guide
-                </Button>
-              }
-            />
-            <SheetContent side="right" className="w-full">
-              <SheetHeader className="pr-14">
-                <SheetTitle className="text-lg font-extrabold text-emerald-900">
-                  What is BINHI simulating?
-                </SheetTitle>
-                <SheetDescription>
-                  A quick guide to the idea, the goals, and how to read the
-                  results.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
-                <GuideContent />
-              </div>
-            </SheetContent>
-          </Sheet>
+          {/* no Guide button on the guide page itself */}
+          {pathname !== "/guide" && (
+            <Sheet open={open} onOpenChange={onOpenChange}>
+              <SheetTrigger
+                render={
+                  <Button variant="outline" aria-label="Open the guide">
+                    <BookOpen /> Guide
+                  </Button>
+                }
+              />
+              <SheetContent side="right" className="w-full">
+                <SheetHeader className="pr-14">
+                  <SheetTitle className="text-lg font-extrabold text-emerald-900">
+                    What is BINHI simulating?
+                  </SheetTitle>
+                  <SheetDescription>
+                    A quick guide to the idea, the goals, and how to read the
+                    results.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+                  <GuideContent />
+                </div>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
       </div>
     </header>
