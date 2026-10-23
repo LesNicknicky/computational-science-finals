@@ -44,7 +44,13 @@ const reportName = (start: number, end: number, ext: string) =>
     : `simulation-report-months-${start}-${end}.${ext}`
 
 export const exportPlot = (start = 1, end = 12) =>
-  download(`/export/plot?start=${start}&end=${end}`, reportName(start, end, "svg"))
+  download(
+    `/export/plot?start=${start}&end=${end}`,
+    reportName(start, end, "svg")
+  )
 
 export const exportPdf = (start = 1, end = 12) =>
-  download(`/export/pdf?start=${start}&end=${end}`, reportName(start, end, "pdf"))
+  download(
+    `/export/pdf?start=${start}&end=${end}`,
+    reportName(start, end, "pdf")
+  )

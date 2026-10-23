@@ -2,16 +2,11 @@ import { Rocket, Sprout } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { NAV_LINKS, SITE } from "@/data/landing-content"
 
 interface NavbarProps {
   onLaunch: () => void
 }
-
-const links = [
-  { href: "#purpose", label: "Purpose" },
-  { href: "#problem", label: "Problem & Solution" },
-  { href: "#news", label: "Hazards & News" },
-]
 
 export function Navbar({ onLaunch }: NavbarProps) {
   return (
@@ -23,16 +18,16 @@ export function Navbar({ onLaunch }: NavbarProps) {
           </span>
           <span className="leading-tight">
             <span className="font-display block text-2xl font-bold text-[#12291d]">
-              BINHI
+              {SITE.name}
             </span>
             <span className="block text-[11px] font-semibold tracking-widest text-[#5f6b2f]">
-              REFORESTATION OFFSET SIMULATOR
+              {SITE.navSubtitle}
             </span>
           </span>
         </a>
 
         <nav className="hidden gap-1 rounded-2xl bg-[#e3e8d3] p-1.5 md:flex">
-          {links.map((l) => (
+          {NAV_LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
@@ -52,14 +47,14 @@ export function Navbar({ onLaunch }: NavbarProps) {
             className="hidden gap-2 rounded-xl bg-[#e3e8d3] px-4 py-2 text-xs font-semibold text-[#12291d] hover:bg-[#e3e8d3] lg:flex"
           >
             <span className="size-2 rounded-full bg-emerald-600" />
-            DENR MO 2012-02 Standard
+            {SITE.standardBadge}
           </Badge>
           <Button
             onClick={onLaunch}
             className="gap-2 bg-emerald-700 font-bold text-white shadow-md hover:bg-emerald-800"
           >
             <Rocket className="size-4" />
-            Launch Simulator
+            {SITE.launchLabel}
           </Button>
         </div>
       </div>

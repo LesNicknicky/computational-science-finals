@@ -1,4 +1,5 @@
 import { Sprout } from "lucide-react"
+import { SITE } from "@/data/landing-content"
 
 export function Footer() {
   return (
@@ -9,16 +10,13 @@ export function Footer() {
             <Sprout className="size-7" />
           </span>
           <div>
-            <p className="font-display text-2xl font-bold text-white">BINHI</p>
-            <p className="max-w-xl text-sm">
-              Reforestation Offset Simulator: Modeling Sapling Requirements,
-              Absorption Recovery, and Relative Flood Risk
+            <p className="font-display text-2xl font-bold text-white">
+              {SITE.name}
             </p>
+            <p className="max-w-xl text-sm">{SITE.fullTitle}</p>
           </div>
         </div>
-        <p className="text-sm md:text-right">
-          © 2026 Team Dysonic • DENR MO 2012-02 &amp; PAGASA climatological data
-        </p>
+        <p className="text-sm md:text-right">{SITE.footerCredit}</p>
       </div>
     </footer>
   )

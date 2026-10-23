@@ -27,32 +27,31 @@ const DEVELOPERS: Developer[] = [
     roles: ["Project Manager", "Software Engineer"],
     quote:
       "I have tasted victory, endured defeat, and risen from the ashes of both. Let history bear witness to what I have achieved. Here I stand. Unfazed.",
-    bio: "Short description.",
-    photo:RAHIEM,
+    bio: "The Project Manager who applies military tactics into task and hard taskmaster ",
+    photo: RAHIEM,
   },
   {
     name: "Vince Kevin Legaspi",
     roles: ["IoT Engineer", "QA Master"],
     quote: "Every setback is a setup for a comeback",
-    bio: "Short description.",
-    photo:KEVIN,
+    bio: "A Keen Eye is needed To win a campaign.",
+    photo: KEVIN,
   },
   {
     name: "Rich Mae Oredeña",
     roles: ["Backend Lead", "AI/ML Engineer"],
     quote: "The secret of getting ahead is getting started",
-    bio: "Short description.",
-    photo:RICH,
+    bio: "Managing The Logic was hard enough, but taking two intricate roles are far more difficult",
+    photo: RICH,
   },
   {
     name: "Louiege Tabago",
     roles: ["Frontend Lead", "Document Specialist"],
     quote: "So, life actually has its own beauty—it's now possible to dream.",
-    bio: "Short description.",
-    photo:LOUIEGE,
+    bio: "To build a structure was hard without foundation. The Project Manager couldn't ask for more",
+    photo: LOUIEGE,
   },
 ]
-/* ------------------------------------------------------------------ */
 
 function initials(name: string) {
   return name

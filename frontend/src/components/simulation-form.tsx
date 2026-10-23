@@ -27,8 +27,7 @@ export interface SimulationFormProps {
 export function SimulationForm(p: SimulationFormProps) {
   const region = REGIONS.find((r) => r.id === p.regionId) ?? REGIONS[0]
   const preset = PRESETS[region.id as RegionId] as
-    | (typeof PRESETS)[RegionId]
-    | undefined
+    (typeof PRESETS)[RegionId] | undefined
   const cutTrees = Math.round((p.cutPercent / 100) * p.matureTrees)
 
   return (
@@ -56,7 +55,7 @@ export function SimulationForm(p: SimulationFormProps) {
               })}{" "}
               m³
             </span>{" "}
-             approximately (early 2023)
+            approximately (early 2023)
           </div>
         )}
       </div>

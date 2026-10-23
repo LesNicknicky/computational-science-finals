@@ -278,7 +278,8 @@ C_d = ponded water (mm)   E_d = water removed per day (mm/day)`,
       {
         symbol: "—",
         meaning: "Status bands for the risk index",
-        value: "Safe below 0.5 · Be careful 0.5 to below 1.0 · Danger 1.0 or more",
+        value:
+          "Safe below 0.5 · Be careful 0.5 to below 1.0 · Danger 1.0 or more",
         source: "Project-defined",
       },
       {

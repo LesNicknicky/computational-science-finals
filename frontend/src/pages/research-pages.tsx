@@ -131,7 +131,8 @@ const REFERENCES: Reference[] = [
     id: "rawls",
     citation:
       "W. J. Rawls, D. L. Brakensiek, and K. E. Saxton, “Infiltration and soil water movement,” in Handbook of Hydrology, D. R. Maidment, Ed. New York, NY, USA: McGraw-Hill, 1993.",
-    check: "Authors differ from your notes (Rawls, Ahuja, Brakensiek, Shirmohammadi); pages unverified (notes say 5.1–5.51)",
+    check:
+      "Authors differ from your notes (Rawls, Ahuja, Brakensiek, Shirmohammadi); pages unverified (notes say 5.1–5.51)",
   },
   {
     id: "txdot",
@@ -223,8 +224,7 @@ const REFERENCES: Reference[] = [
   },
   {
     id: "bureau-forestry",
-    citation:
-      "Bureau of Forestry, Handbook of Selective Logging, 1970.",
+    citation: "Bureau of Forestry, Handbook of Selective Logging, 1970.",
     check: "Verify publisher and details",
   },
   {
@@ -246,8 +246,7 @@ const REFERENCES: Reference[] = [
   },
   {
     id: "seo",
-    citation:
-      "Senate Economic Planning Office, “Forest-related report.”",
+    citation: "Senate Economic Planning Office, “Forest-related report.”",
     check: "Add title, year and link",
   },
   {
@@ -333,7 +332,15 @@ const SOURCES: DataSource[] = [
     usedFor: "Sets how long saplings need before they replace an old tree.",
     goodToKnow:
       "Growth numbers come from falcata, a fast-growing plantation tree.",
-    refIds: ["uriarte", "richards", "marryanna", "alipon", "coa", "pids", "seo"],
+    refIds: [
+      "uriarte",
+      "richards",
+      "marryanna",
+      "alipon",
+      "coa",
+      "pids",
+      "seo",
+    ],
   },
 ]
 
@@ -393,8 +400,8 @@ const RAIN_STATIONS: RainStation[] = [
     region: "Central Visayas",
     station: "Mactan International Airport, Cebu",
     monthly: [
-      135.1, 88.9, 60.9, 55.6, 94.4, 180.7, 210.6, 157.9, 190.4, 207.6,
-      131.0, 171.9,
+      135.1, 88.9, 60.9, 55.6, 94.4, 180.7, 210.6, 157.9, 190.4, 207.6, 131.0,
+      171.9,
     ],
     note: "Monthly values still need a double-check against the PAGASA table.",
   },

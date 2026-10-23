@@ -90,7 +90,9 @@ export function PredictionAreaChart({
     <GlassCard className="min-h-0 min-w-0 flex-[2.2] flex-col px-3 py-2.5 max-lg:min-h-72">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <CardTitle icon={CloudRain}>Can the ground handle the rain?</CardTitle>
+          <CardTitle icon={CloudRain}>
+            Can the ground handle the rain?
+          </CardTitle>
           <div className="-mt-1 mb-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="h-2.5 w-4 rounded-full bg-[#2f7fb0]/50" />
@@ -104,12 +106,23 @@ export function PredictionAreaChart({
         </div>
       </div>
 
-      <ChartContainer config={config} className="clay-inset min-h-44 w-full flex-1 lg:min-h-0 p-1.5 pt-2">
+      <ChartContainer
+        config={config}
+        className="clay-inset min-h-44 w-full flex-1 p-1.5 pt-2 lg:min-h-0"
+      >
         <AreaChart data={view} margin={{ left: 0, right: 12, top: 14 }}>
           <defs>
             <linearGradient id="rainFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--color-rain)" stopOpacity={0.55} />
-              <stop offset="100%" stopColor="var(--color-rain)" stopOpacity={0.05} />
+              <stop
+                offset="0%"
+                stopColor="var(--color-rain)"
+                stopOpacity={0.55}
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--color-rain)"
+                stopOpacity={0.05}
+              />
             </linearGradient>
           </defs>
 
@@ -142,7 +155,11 @@ export function PredictionAreaChart({
             tick={{ fontSize: 12, fill: "#3f4f44" }}
           />
           <ChartTooltip
-            cursor={{ stroke: "#3aa882", strokeOpacity: 0.4, strokeDasharray: "3 4" }}
+            cursor={{
+              stroke: "#3aa882",
+              strokeOpacity: 0.4,
+              strokeDasharray: "3 4",
+            }}
             content={<FriendlyTooltip />}
           />
 
@@ -165,7 +182,12 @@ export function PredictionAreaChart({
             fill="url(#rainFill)"
             strokeWidth={3}
             isAnimationActive={false}
-            activeDot={{ r: 5, fill: "#fff", stroke: "#2f7fb0", strokeWidth: 2 }}
+            activeDot={{
+              r: 5,
+              fill: "#fff",
+              stroke: "#2f7fb0",
+              strokeWidth: 2,
+            }}
           />
 
           {peak && peak.rain !== null && (
